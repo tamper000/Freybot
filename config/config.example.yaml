@@ -1,0 +1,22 @@
+telegram:
+  token: 1234:ABCDHJOPIDFJKDSF
+  admin: 123432234
+
+api:
+  timeout: 5m
+  ioNetToken: io-v2-abra.cadab.ra.
+  pollinationsToken: 123908d-12dsf
+  openRouterToken: sk-or-v1-92384907324jkdgsfjfdgh
+
+database:
+  path: ./database/bot.db
+  maxHistory: 20
+
+ratelimit:
+  rate: 10
+  time: 1m
+
+webhook:
+  port: 8888
+  enabled: true
+  domain: bot.example.domain.com
