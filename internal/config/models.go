@@ -42,12 +42,13 @@ const (
 )
 
 var gptModels = []AIModel{
-	{Title: "GPT-4.1", ApiName: "openai-large", Image: true, Provider: Pollinations},
+	// {Title: "GPT-4.1", ApiName: "openai-large", Image: true, Provider: Pollinations},
 	{Title: "GPT-4.1 Nano", ApiName: "openai", Image: true, Provider: Pollinations},
 	{Title: "GPT-5 Nano", ApiName: "gpt-5-nano", Image: true, Provider: Pollinations},
 	{Title: "GPT-OSS", ApiName: "openai/gpt-oss-120b", Provider: IoNet},
 	{Title: "GPT-OSS-20b", ApiName: "openai/gpt-oss-20b", Provider: IoNet},
 	{Title: "GPT-OSS-20b 2", ApiName: "openai/gpt-oss-20b:free", Provider: OpenRouter},
+	{Title: "GPT o3", ApiName: "openai-reasoning", Provider: Pollinations},
 }
 
 var qwenModels = []AIModel{
@@ -69,19 +70,20 @@ var deepSeekModels = []AIModel{
 
 var mistralModels = []AIModel{
 	{Title: "Mistral Large", ApiName: "mistralai/Mistral-Large-Instruct-2411", Provider: IoNet},
-	{Title: "Devstrall Nemo", ApiName: "mistralai/Mistral-Nemo-Instruct-2407", Provider: IoNet},
 	{Title: "Mistral Small 3.2", ApiName: "mistralai/mistral-small-3.2-24b-instruct:free", Image: true, Provider: OpenRouter},
 }
 
 var geminiModels = []AIModel{
 	{Title: "Gemma 3", ApiName: "google/gemma-3-27b-it:free", Image: true, Provider: OpenRouter},
-	// {Title: "Gemini 2.5 Lite", ApiName: "gemini", Provider: Pollinations, Image: true},
-	// {Title: "Gemini 2.5 Search", ApiName: "geminisearch", Provider: Pollinations, Image: true},
+	{Title: "Gemini 2.5 Flash Lite", ApiName: "gemini", Provider: Pollinations},
 }
 
 var otherModels = []AIModel{
 	{Title: "Llama 3.3", ApiName: "meta-llama/llama-3.3-70b-instruct:free", Provider: OpenRouter},
 	{Title: "Llama 3.3 2", ApiName: "meta-llama/Llama-3.3-70B-Instruct", Provider: IoNet},
+	{Title: "Llama 4 Maverick", ApiName: "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8", Provider: IoNet, Image: true},
+	{Title: "Llama 4 Scout", ApiName: "llamascout", Provider: Pollinations},
+	{Title: "Claude 3.5 Haiku", ApiName: "claude", Provider: Pollinations},
 }
 
 var PhotoModels = []AIModel{

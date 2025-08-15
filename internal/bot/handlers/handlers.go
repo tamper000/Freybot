@@ -81,7 +81,7 @@ func (h *Handler) MessageHandler(ctx *th.Context, message telego.Message) error 
 		return err
 	}
 
-	msg := tu.Message(chatID, fmt.Sprintf("_%s_", answer)).WithParseMode(telego.ModeMarkdown).
+	msg := tu.Message(chatID, answer).
 		WithReplyMarkup(keyboards.GenerateDummyButton("Генерируется " + info.Title))
 	sended, err := ctx.Bot().SendMessage(ctx, msg)
 	if err != nil {
