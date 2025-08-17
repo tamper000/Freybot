@@ -61,7 +61,7 @@ func (h *Handler) MessageHandler(ctx *th.Context, message telego.Message) error 
 	if message.Text != "" {
 		answer = message.Text
 	} else if message.Voice != nil {
-		text, err := TranscribeAudio(ctx, ctx.Bot(), message.Voice)
+		text, err := h.TranscribeAudio(ctx, ctx.Bot(), message.Voice)
 		if err != nil {
 			msg := tu.Message(chatID, "К сожалению не удалось обработать ваше голосовое сообщение.")
 			ctx.Bot().SendMessage(ctx, msg)
@@ -114,7 +114,10 @@ func (h *Handler) MessageHandler(ctx *th.Context, message telego.Message) error 
 		if i == len(result)-1 {
 			msg = msg.WithReplyMarkup(keyboards.GenerateDummyButton("Сгенерировано " + info.Title))
 		}
-		ctx.Bot().SendMessage(ctx, msg)
+		if _, err := ctx.Bot().SendMessage(ctx, msg); err != nil {
+			msg.ParseMode = ""
+			ctx.Bot().SendMessage(ctx, msg)
+		}
 	}
 	return nil
 }
@@ -225,9 +228,15 @@ func (h *Handler) ImageHandler(ctx *th.Context, message telego.Message) error {
 		ctx.Bot().EditMessageText(ctx, messageEdit)
 		return err
 	}
-	messageEdit := tu.EditMessageText(chatID, sended.MessageID, resp).
-		WithReplyMarkup(keyboards.GenerateDummyButton("Сгенерировано " + info.Title))
-	_, err = ctx.Bot().EditMessageText(ctx, messageEdit)
+
+	text := md.ConvertMarkdownToTelegramMarkdownV2(resp)
+	messageEdit := tu.EditMessageText(chatID, sended.MessageID, text).
+		WithReplyMarkup(keyboards.GenerateDummyButton("Сгенерировано " + info.Title)).
+		WithParseMode(telego.ModeMarkdownV2)
+	if _, err = ctx.Bot().EditMessageText(ctx, messageEdit); err != nil {
+		messageEdit.ParseMode = ""
+		ctx.Bot().EditMessageText(ctx, messageEdit)
+	}
 	return err
 }
 
