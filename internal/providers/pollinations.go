@@ -22,6 +22,7 @@ type ClientPollinations interface {
 	NewMessage(history []models.Message, model, prompt string) (string, error)
 	NewMessageWithPhoto(message, model string, photo []byte) (string, error)
 	GeneratePhoto(prompt, model string) ([]byte, error)
+	NewMessageVoice(data []byte) (string, error)
 }
 
 type PollinationsClient struct {

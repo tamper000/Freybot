@@ -9,7 +9,6 @@ import (
 	"github.com/tamper000/freybot/internal/config"
 	"github.com/tamper000/freybot/internal/models"
 	"github.com/tamper000/freybot/internal/providers"
-	"github.com/tamper000/freybot/internal/transcribe"
 )
 
 func GetModelsByGroup(group string) []config.AIModel {
@@ -101,7 +100,7 @@ func SplitText(text string) []string {
 	return result
 }
 
-func TranscribeAudio(ctx context.Context, bot *telego.Bot, voice *telego.Voice) (string, error) {
+func (h *Handler) TranscribeAudio(ctx context.Context, bot *telego.Bot, voice *telego.Voice) (string, error) {
 	file, err := bot.GetFile(ctx, &telego.GetFileParams{
 		FileID: voice.FileID,
 	})
@@ -115,7 +114,7 @@ func TranscribeAudio(ctx context.Context, bot *telego.Bot, voice *telego.Voice) 
 		return "", err
 	}
 
-	return transcribe.TranscribeAudio(fileData)
+	return h.pClient.NewMessageVoice(fileData)
 }
 
 func (h *Handler) GetClientByProvider(provider config.ProviderModel) providers.Client {
