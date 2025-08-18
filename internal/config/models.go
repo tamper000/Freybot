@@ -79,11 +79,10 @@ var geminiModels = []AIModel{
 }
 
 var otherModels = []AIModel{
-	{Title: "Llama 3.3", ApiName: "meta-llama/llama-3.3-70b-instruct:free", Provider: OpenRouter},
-	{Title: "Llama 3.3 2", ApiName: "meta-llama/Llama-3.3-70B-Instruct", Provider: IoNet},
 	{Title: "Llama 4 Maverick", ApiName: "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8", Provider: IoNet, Image: true},
-	{Title: "Llama 4 Scout", ApiName: "llamascout", Provider: Pollinations},
 	{Title: "Claude 3.5 Haiku", ApiName: "claude", Provider: Pollinations},
+	{Title: "GLM 4.5 Air", ApiName: "z-ai/glm-4.5-air:free", Provider: OpenRouter},
+	{Title: "Kimi K2", ApiName: "moonshotai/kimi-k2:free", Provider: OpenRouter},
 }
 
 var PhotoModels = []AIModel{
