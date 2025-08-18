@@ -89,7 +89,7 @@ func GetRole(prompt string) string {
 }
 
 func GenerateHistory(prompt string, history []models.Message) (data []openai.ChatCompletionMessageParamUnion) {
-	data = append(data, openai.SystemMessage(prompt))
+	data = append(data, openai.SystemMessage(prompt+textFormatPrompt))
 
 	for _, msg := range history {
 		switch msg.Role {
