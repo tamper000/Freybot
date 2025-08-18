@@ -46,6 +46,7 @@ func (h *Handler) MessageHandler(ctx *th.Context, message telego.Message) error 
 		ctx.Bot().SendMessage(ctx, msg)
 		return err
 	}
+
 	if user.Model == "" {
 		msg := tu.Message(chatID, "Для начала выберите одну из моделей!")
 		_, err := ctx.Bot().SendMessage(ctx, msg)
@@ -103,21 +104,25 @@ func (h *Handler) MessageHandler(ctx *th.Context, message telego.Message) error 
 	}
 
 	h.dialogRepo.AddMessage(message.From.ID, "assistant", resp)
-
 	ctx.Bot().DeleteMessage(ctx, tu.Delete(chatID, sended.MessageID))
 
-	result := SplitText(resp)
+	resp = strings.ReplaceAll(resp, "<br>", "\n")
+	result, err := SplitHTML(resp)
+	if err != nil {
+		fmt.Println(resp)
+		msg := tu.Message(chatID, err.Error()).
+			WithReplyMarkup(keyboards.GenerateDummyButton("Сгенерировано " + info.Title))
+		ctx.Bot().SendMessage(ctx, msg)
+		return err
+	}
 
 	for i := range len(result) {
-		text := md.ConvertMarkdownToTelegramMarkdownV2(result[i])
-		msg := tu.Message(chatID, text).WithParseMode(telego.ModeMarkdownV2)
+		text := result[i]
+		msg := tu.Message(chatID, text).WithParseMode(telego.ModeHTML)
 		if i == len(result)-1 {
 			msg = msg.WithReplyMarkup(keyboards.GenerateDummyButton("Сгенерировано " + info.Title))
 		}
-		if _, err := ctx.Bot().SendMessage(ctx, msg); err != nil {
-			msg.ParseMode = ""
-			ctx.Bot().SendMessage(ctx, msg)
-		}
+		ctx.Bot().SendMessage(ctx, msg)
 	}
 	return nil
 }

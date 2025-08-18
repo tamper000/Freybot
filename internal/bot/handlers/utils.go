@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/mymmrac/telego"
@@ -9,6 +11,7 @@ import (
 	"github.com/tamper000/freybot/internal/config"
 	"github.com/tamper000/freybot/internal/models"
 	"github.com/tamper000/freybot/internal/providers"
+	"golang.org/x/net/html"
 )
 
 func GetModelsByGroup(group string) []config.AIModel {
@@ -73,7 +76,7 @@ func GetPhotoModelByApiName(name string) config.AIModel {
 	return config.AIModel{}
 }
 
-func SplitText(text string) []string {
+func splitText(text string) []string {
 	var (
 		result    = []string{}
 		chunkSize = 3600
@@ -98,6 +101,68 @@ func SplitText(text string) []string {
 	}
 
 	return result
+}
+
+func SplitHTML(content string) ([]string, error) {
+	reader := strings.NewReader(content)
+	tokenizer := html.NewTokenizer(reader)
+
+	var (
+		current   strings.Builder
+		intag     strings.Builder
+		result    = []string{}
+		chunkSize = 3600
+		opens     = 0
+	)
+
+	for {
+		tokenType := tokenizer.Next()
+		if tokenType == html.ErrorToken {
+			if opens != 0 {
+				return result, errors.New("Нейросеть вернула битый текст.")
+			}
+			if current.Len() > 0 {
+				result = append(result, current.String())
+			}
+			if intag.Len() > 0 {
+				result = append(result, intag.String())
+			}
+			break
+		}
+
+		switch tokenType {
+		case html.StartTagToken:
+			text := tokenizer.Token().String()
+			intag.WriteString(text)
+			opens++
+		case html.EndTagToken:
+			text := tokenizer.Token().String()
+			intag.WriteString(text)
+			opens--
+		default:
+			intag.WriteString(tokenizer.Token().String())
+			if intag.Len() > chunkSize && opens != 0 {
+				return result, errors.New("Нейросеть вернула битый текст.")
+			}
+		}
+
+		if opens == 0 {
+			if intag.Len()+current.Len() <= chunkSize {
+				current.WriteString(intag.String())
+				intag.Reset()
+			} else if intag.Len() > chunkSize {
+				result = append(result, current.String())
+				current.Reset()
+				chunks := splitText(intag.String())
+				fmt.Println(len(chunks))
+				result = append(result, chunks[:len(chunks)-1]...)
+				intag.Reset()
+				current.WriteString(chunks[len(chunks)-1])
+			}
+		}
+	}
+
+	return result, nil
 }
 
 func (h *Handler) TranscribeAudio(ctx context.Context, bot *telego.Bot, voice *telego.Voice) (string, error) {

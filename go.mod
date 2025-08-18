@@ -10,6 +10,7 @@ require (
 	github.com/spf13/viper v1.20.1
 	github.com/valyala/fasthttp v1.64.0
 	github.com/zavitkov/tg-markdown v1.0.1
+	golang.org/x/net v0.42.0
 	gorm.io/driver/sqlite v1.6.0
 	gorm.io/gorm v1.30.1
 )
