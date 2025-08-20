@@ -113,6 +113,8 @@ func SplitHTML(content string) ([]string, error) {
 		result    = []string{}
 		chunkSize = 3600
 		opens     = 0
+		isCode    = false
+		clearText strings.Builder
 	)
 
 	for {
@@ -132,15 +134,48 @@ func SplitHTML(content string) ([]string, error) {
 
 		switch tokenType {
 		case html.StartTagToken:
-			text := tokenizer.Token().String()
-			intag.WriteString(text)
-			opens++
+			token := tokenizer.Token()
+			text := token.String()
+			fmt.Println(text, isCode)
+			if token.Data == "code" {
+				isCode = true
+				intag.WriteString(text)
+				opens++
+			} else {
+				if isCode {
+					text = strings.ReplaceAll(text, "<", "&lt;")
+					text = strings.ReplaceAll(text, ">", "&gt;")
+					intag.WriteString(text)
+				} else {
+					intag.WriteString(text)
+					opens++
+				}
+			}
 		case html.EndTagToken:
-			text := tokenizer.Token().String()
-			intag.WriteString(text)
-			opens--
+			token := tokenizer.Token()
+			text := token.String()
+
+			fmt.Println(text, isCode)
+			if token.Data == "code" {
+				isCode = false
+				intag.WriteString(text)
+				opens--
+			} else {
+				if isCode {
+					text = strings.ReplaceAll(text, "<", "&lt;")
+					text = strings.ReplaceAll(text, ">", "&gt;")
+					intag.WriteString(text)
+				} else {
+					intag.WriteString(text)
+					opens--
+				}
+			}
 		default:
-			intag.WriteString(tokenizer.Token().String())
+			text := tokenizer.Token().String()
+			clearText.WriteString(text)
+			text = strings.ReplaceAll(text, "<", "&lt;")
+			text = strings.ReplaceAll(text, ">", "&gt;")
+			intag.WriteString(text)
 			if intag.Len() > chunkSize && opens != 0 {
 				return result, errors.New("Нейросеть вернула битый текст.")
 			}

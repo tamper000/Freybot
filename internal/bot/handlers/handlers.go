@@ -107,6 +107,8 @@ func (h *Handler) MessageHandler(ctx *th.Context, message telego.Message) error 
 	ctx.Bot().DeleteMessage(ctx, tu.Delete(chatID, sended.MessageID))
 
 	resp = strings.ReplaceAll(resp, "<br>", "\n")
+	resp = strings.ReplaceAll(resp, `\n`, "\n")
+
 	result, err := SplitHTML(resp)
 	if err != nil {
 		fmt.Println(resp)
