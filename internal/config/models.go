@@ -54,7 +54,9 @@ var gptModels = []AIModel{
 var qwenModels = []AIModel{
 	{Title: "Qwen3-235B", ApiName: "qwen/qwen3-235b-a22b:free", Provider: OpenRouter},
 	{Title: "Qwen3-Coder", ApiName: "Intel/Qwen3-Coder-480B-A35B-Instruct-int4-mixed-ar", Provider: IoNet},
+	{Title: "Qwen3-Coder 2", ApiName: "qwen/qwen3-coder:free", Provider: OpenRouter},
 	{Title: "Qwen3-235B-Thinking", ApiName: "Qwen/Qwen3-235B-A22B-Thinking-2507", Provider: IoNet},
+	{Title: "Qwen3-30B", ApiName: "qwen/qwen3-30b-a3b:free", Provider: OpenRouter},
 	{Title: "Qwen2.5 VL", ApiName: "Qwen/Qwen2.5-VL-32B-Instruct", Image: true, Provider: IoNet},
 	{Title: "Qwen2.5-FAST", ApiName: "featherless/qwerky-72b:free", Provider: OpenRouter},
 }
@@ -65,7 +67,7 @@ var deepSeekModels = []AIModel{
 	{Title: "Deepseek R1 3", ApiName: "deepseek-reasoning", Provider: Pollinations},
 	{Title: "Deepseek V3", ApiName: "deepseek/deepseek-chat-v3-0324:free", Provider: OpenRouter},
 	{Title: "Deepseek-Chimera", ApiName: "tngtech/deepseek-r1t2-chimera:free", Provider: OpenRouter},
-	{Title: "Deepseek R1-Llama", ApiName: "deepseek/deepseek-r1-distill-llama-70b:free", Provider: OpenRouter},
+	{Title: "Deepseek R1-Qwen3", ApiName: "deepseek/deepseek-r1-0528-qwen3-8b:free", Provider: OpenRouter},
 }
 
 var mistralModels = []AIModel{
