@@ -8,7 +8,6 @@ import (
 	th "github.com/mymmrac/telego/telegohandler"
 	tu "github.com/mymmrac/telego/telegoutil"
 	"github.com/tamper000/freybot/internal/bot/keyboards"
-	"github.com/tamper000/freybot/internal/providers"
 )
 
 func (h *Handler) ChooseGroup(ctx *th.Context, message telego.Message) error {
@@ -84,8 +83,7 @@ func (h *Handler) ChooseRole(ctx *th.Context, message telego.Message) error {
 func (h *Handler) ChooseRoleCallback(ctx *th.Context, query telego.CallbackQuery) error {
 	ctx.Bot().AnswerCallbackQuery(ctx.Context(), tu.CallbackQuery(query.ID))
 	role := strings.Replace(query.Data, "r_", "", 1)
-	prompt := providers.GetRole(role)
-	h.userRepo.UpdateRole(query.From.ID, prompt)
+	h.userRepo.UpdateRole(query.From.ID, role)
 
 	msg := tu.EditMessageText(tu.ID(query.From.ID), query.Message.GetMessageID(), "*Выбор завершен!*").WithParseMode(telego.ModeMarkdown)
 	ctx.Bot().EditMessageText(ctx.Context(), msg)

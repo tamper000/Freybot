@@ -12,7 +12,7 @@ import (
 )
 
 type Client interface {
-	NewMessage(history []models.Message, model, prompt string) (string, error)
+	NewMessage(history []models.Message, model, role string) (string, error)
 	NewMessageWithPhoto(message, model string, photo []byte) (string, error)
 }
 
@@ -21,7 +21,8 @@ type OpenaiClient struct {
 	timeout time.Duration
 }
 
-func (c *OpenaiClient) NewMessage(history []models.Message, model, prompt string) (string, error) {
+func (c *OpenaiClient) NewMessage(history []models.Message, model, role string) (string, error) {
+	prompt := GetRole(role)
 	openaiHistory := GenerateHistory(prompt, history)
 
 	ctx := context.Background()
@@ -73,8 +74,8 @@ func CreateClients(cfg *config.Config) (Client, ClientPollinations, Client) {
 		NewOpenRouterClient(cfg.Models.OpenRouterToken, cfg.Models.Timeout)
 }
 
-func GetRole(prompt string) string {
-	switch prompt {
+func GetRole(role string) string {
+	switch role {
 	case "default":
 		return defaultPrompt
 	case "nyasha":
