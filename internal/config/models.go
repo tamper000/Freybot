@@ -48,7 +48,7 @@ var gptModels = []AIModel{
 	{Title: "GPT-OSS", ApiName: "openai/gpt-oss-120b", Provider: IoNet},
 	{Title: "GPT-OSS-20b", ApiName: "openai/gpt-oss-20b", Provider: IoNet},
 	{Title: "GPT-OSS-20b 2", ApiName: "openai/gpt-oss-20b:free", Provider: OpenRouter},
-	{Title: "GPT o3", ApiName: "openai-reasoning", Provider: Pollinations},
+	{Title: "o4-mini", ApiName: "openai-reasoning", Provider: Pollinations},
 }
 
 var qwenModels = []AIModel{
@@ -63,8 +63,9 @@ var qwenModels = []AIModel{
 
 var deepSeekModels = []AIModel{
 	{Title: "Deepseek-R1", ApiName: "deepseek-ai/DeepSeek-R1-0528", Provider: IoNet},
-	{Title: "Deepseek R1 2", ApiName: "deepseek/deepseek-r1:free", Provider: OpenRouter},
-	{Title: "Deepseek R1 3", ApiName: "deepseek-reasoning", Provider: Pollinations},
+	{Title: "Deepseek-R1 2", ApiName: "deepseek/deepseek-r1:free", Provider: OpenRouter},
+	{Title: "Deepseek-R1 3", ApiName: "deepseek-reasoning", Provider: Pollinations},
+	{Title: "Deepseek V3.1", ApiName: "deepseek/deepseek-chat-v3.1:free", Provider: OpenRouter},
 	{Title: "Deepseek V3", ApiName: "deepseek/deepseek-chat-v3-0324:free", Provider: OpenRouter},
 	{Title: "Deepseek-Chimera", ApiName: "tngtech/deepseek-r1t2-chimera:free", Provider: OpenRouter},
 	{Title: "Deepseek R1-Qwen3", ApiName: "deepseek/deepseek-r1-0528-qwen3-8b:free", Provider: OpenRouter},
@@ -82,7 +83,6 @@ var geminiModels = []AIModel{
 
 var otherModels = []AIModel{
 	{Title: "Llama 4 Maverick", ApiName: "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8", Provider: IoNet, Image: true},
-	{Title: "Claude 3.5 Haiku", ApiName: "claude", Provider: Pollinations},
 	{Title: "GLM 4.5 Air", ApiName: "z-ai/glm-4.5-air:free", Provider: OpenRouter},
 	{Title: "Kimi K2", ApiName: "moonshotai/kimi-k2:free", Provider: OpenRouter},
 }
