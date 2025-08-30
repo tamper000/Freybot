@@ -1,22 +1,22 @@
 telegram:
-  token: 1234:ABCDHJOPIDFJKDSF
-  admin: 123432234
+  token: 1234:ABCDHJOPIDFJKDSF # Bot token
+  admin: 123432234 # admin ID
 
 api:
-  timeout: 5m
+  timeout: 5m # timeout for generate AI's response
   ioNetToken: io-v2-abra.cadab.ra.
   pollinationsToken: 123908d-12dsf
   openRouterToken: sk-or-v1-92384907324jkdgsfjfdgh
 
 database:
   path: ./database/bot.db
-  maxHistory: 20
+  maxHistory: 20 # max number of messages in history
 
 ratelimit:
-  rate: 10
-  time: 1m
+  rate: 10 # max number of requests per time period
+  time: 1m # time period
 
 webhook:
-  port: 8888
-  enabled: true
-  domain: bot.example.domain.com
+  port: 8888 # local port for webhook
+  enabled: true # false - longpoll | true - webhook
+  domain: bot.example.domain.com # webhook domain
