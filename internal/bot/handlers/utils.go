@@ -11,6 +11,7 @@ import (
 	"github.com/tamper000/freybot/internal/config"
 	"github.com/tamper000/freybot/internal/models"
 	"github.com/tamper000/freybot/internal/providers"
+	"github.com/tamper000/freybot/internal/transcribe"
 	"golang.org/x/net/html"
 )
 
@@ -214,7 +215,9 @@ func (h *Handler) TranscribeAudio(ctx context.Context, bot *telego.Bot, voice *t
 		return "", err
 	}
 
-	return h.pClient.NewMessageVoice(fileData)
+	return transcribe.TranscribeAudio(fileData)
+
+	// return h.pClient.NewMessageVoice(fileData)
 }
 
 func (h *Handler) GetClientByProvider(provider config.ProviderModel) providers.Client {

@@ -78,7 +78,7 @@ var mistralModels = []AIModel{
 
 var geminiModels = []AIModel{
 	{Title: "Gemma 3", ApiName: "google/gemma-3-27b-it:free", Image: true, Provider: OpenRouter},
-	{Title: "Gemini 2.5 Flash Lite", ApiName: "gemini", Provider: Pollinations},
+	{Title: "Gemini 2.5 Lite", ApiName: "gemini", Provider: Pollinations},
 }
 
 var otherModels = []AIModel{

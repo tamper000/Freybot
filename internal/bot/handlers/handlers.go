@@ -38,8 +38,6 @@ func (h *Handler) StartHandler(ctx *th.Context, message telego.Message) error {
 func (h *Handler) MessageHandler(ctx *th.Context, message telego.Message) error {
 	chatID := tu.ID(message.From.ID)
 
-	ctx.Bot().SendChatAction(ctx, tu.ChatAction(chatID, telego.ChatActionTyping))
-
 	user, err := h.userRepo.GetUser(message.From.ID)
 	if err != nil {
 		msg := tu.Message(chatID, "Произошла неизвестная ошибка.")
@@ -62,6 +60,14 @@ func (h *Handler) MessageHandler(ctx *th.Context, message telego.Message) error 
 	if message.Text != "" {
 		answer = message.Text
 	} else if message.Voice != nil {
+		ctx.Bot().SetMessageReaction(ctx, &telego.SetMessageReactionParams{
+			ChatID:    chatID,
+			MessageID: message.MessageID,
+			Reaction: []telego.ReactionType{
+				&telego.ReactionTypeEmoji{Emoji: "⚡", Type: "emoji"},
+			},
+			IsBig: false,
+		})
 		text, err := h.TranscribeAudio(ctx, ctx.Bot(), message.Voice)
 		if err != nil {
 			msg := tu.Message(chatID, "К сожалению не удалось обработать ваше голосовое сообщение.")
