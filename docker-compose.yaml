@@ -1,0 +1,22 @@
+services:
+  telegram-bot:
+    build: .
+    container_name: freybot
+    volumes:
+      - ./config/config.yaml:/app/config/config.yaml
+      - ./database:/app/database:rw
+    ports:
+      - "8888:8888" # webhook
+    expose:
+      - "8080" # for prometheus
+    restart: unless-stopped
+    user: "1000:1000"
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus.yaml:/etc/prometheus/prometheus.yml
+    restart: unless-stopped

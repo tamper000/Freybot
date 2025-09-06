@@ -17,8 +17,7 @@ COPY internal/ internal/
 RUN CGO_ENABLED=1 GOOS=linux go build -o main ./cmd/main.go
 
 RUN mkdir -p /src/config; \
-    mkdir -p /src/database; \
-    touch /src/database/bot.db
+    mkdir -p /src/database
 
 # Stage 2
 FROM gcr.io/distroless/cc-debian12
@@ -30,5 +29,8 @@ COPY --chown=65532:65532 --from=builder /src/database /app/database
 WORKDIR /app
 USER 65532
 
+# webhook
 EXPOSE 8888
+# metrics
+EXPOSE 8080
 ENTRYPOINT ["./main"]

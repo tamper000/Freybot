@@ -6,4 +6,4 @@ scrape_configs:
   - job_name: "telegram-bot"
     scrape_interval: 5s
     static_configs:
-      - targets: ["localhost:8080"]
+      - targets: ["freybot:8080"]
