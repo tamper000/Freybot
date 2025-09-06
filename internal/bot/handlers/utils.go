@@ -3,7 +3,6 @@ package handlers
 import (
 	"context"
 	"errors"
-	"fmt"
 	"strings"
 
 	"github.com/mymmrac/telego"
@@ -137,7 +136,6 @@ func SplitHTML(content string) ([]string, error) {
 		case html.StartTagToken:
 			token := tokenizer.Token()
 			text := token.String()
-			fmt.Println(text, isCode)
 			if token.Data == "code" {
 				isCode = true
 				intag.WriteString(text)
@@ -156,7 +154,6 @@ func SplitHTML(content string) ([]string, error) {
 			token := tokenizer.Token()
 			text := token.String()
 
-			fmt.Println(text, isCode)
 			if token.Data == "code" {
 				isCode = false
 				intag.WriteString(text)
@@ -190,7 +187,6 @@ func SplitHTML(content string) ([]string, error) {
 				result = append(result, current.String())
 				current.Reset()
 				chunks := splitText(intag.String())
-				fmt.Println(len(chunks))
 				result = append(result, chunks[:len(chunks)-1]...)
 				intag.Reset()
 				current.WriteString(chunks[len(chunks)-1])

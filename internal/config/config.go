@@ -8,11 +8,12 @@ import (
 )
 
 type Config struct {
-	Telegram  TelegramConfig  `mapstructure:"telegram"`
-	Models    ModelsConfig    `mapstructure:"api"`
-	Database  DatabaseConfig  `mapstructure:"database"`
-	Ratelimit RatelimitConfig `mapstructure:"ratelimit"`
-	Webhook   WebhookConfig   `mapstructure:"webhook"`
+	Telegram   TelegramConfig   `mapstructure:"telegram"`
+	Models     ModelsConfig     `mapstructure:"api"`
+	Database   DatabaseConfig   `mapstructure:"database"`
+	Ratelimit  RatelimitConfig  `mapstructure:"ratelimit"`
+	Webhook    WebhookConfig    `mapstructure:"webhook"`
+	Prometheus PrometheusConfig `mapstructure:"prometheus"`
 }
 
 type TelegramConfig struct {
@@ -38,9 +39,14 @@ type RatelimitConfig struct {
 }
 
 type WebhookConfig struct {
-	Port    string `mapstructure:"port"`
+	Port    int    `mapstructure:"port"`
 	Enabled bool   `mapstructure:"enabled"`
 	Domain  string `mapstructure:"domain"`
+}
+
+type PrometheusConfig struct {
+	Port    int  `mapstructure:"port"`
+	Enabled bool `mapstructure:"enabled"`
 }
 
 func LoadConfig() (*Config, error) {

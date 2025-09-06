@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -15,6 +16,7 @@ import (
 	predicate "github.com/tamper000/freybot/internal/bot/predicates"
 	"github.com/tamper000/freybot/internal/config"
 	"github.com/tamper000/freybot/internal/database"
+	"github.com/tamper000/freybot/internal/metrics"
 	"github.com/tamper000/freybot/internal/providers"
 	"github.com/tamper000/freybot/internal/repository"
 	"github.com/valyala/fasthttp"
@@ -41,7 +43,7 @@ func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
 
-	bot, err := telego.NewBot(cfg.Telegram.Token, telego.WithDefaultDebugLogger())
+	bot, err := telego.NewBot(cfg.Telegram.Token, telego.WithDefaultLogger(false, true))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -53,7 +55,7 @@ func main() {
 	if !cfg.Webhook.Enabled {
 		bh = LongPoll(ctx, bot)
 	} else {
-		bh, srv = WebHook(ctx, bot, cfg.Webhook.Domain, cfg.Webhook.Port)
+		bh, srv = WebHook(ctx, bot, cfg.Webhook.Domain, strconv.Itoa(cfg.Webhook.Port))
 	}
 
 	ionet, pollinations, openrouter := providers.CreateClients(cfg)
@@ -69,6 +71,10 @@ func main() {
 
 	AddAdminHandlers(bh, handlers, cfg.Telegram.AdminID)
 	AddPrivateHandlers(bh, handlers)
+
+	if cfg.Prometheus.Enabled {
+		go metrics.StartServer(ctx, ":"+strconv.Itoa((cfg.Prometheus.Port)))
+	}
 
 	go func() {
 		fmt.Println("Starting bot handler...")

@@ -8,6 +8,7 @@ import (
 
 	"github.com/mymmrac/telego"
 	"github.com/tamper000/freybot/internal/bot/keyboards"
+	"github.com/tamper000/freybot/internal/metrics"
 	"github.com/tamper000/freybot/internal/providers"
 	"github.com/tamper000/freybot/internal/repository"
 	md "github.com/zavitkov/tg-markdown"
@@ -56,10 +57,13 @@ func (h *Handler) MessageHandler(ctx *th.Context, message telego.Message) error 
 	provider := GetProviderByUser(user)
 	client = h.GetClientByProvider(provider)
 
+	metrics.AIRequestsTotal.Inc()
+
 	var answer string
 	if message.Text != "" {
 		answer = message.Text
 	} else if message.Voice != nil {
+		metrics.VoiceRequestsTotal.Inc()
 		ctx.Bot().SetMessageReaction(ctx, &telego.SetMessageReactionParams{
 			ChatID:    chatID,
 			MessageID: message.MessageID,
@@ -70,6 +74,7 @@ func (h *Handler) MessageHandler(ctx *th.Context, message telego.Message) error 
 		})
 		text, err := h.TranscribeAudio(ctx, ctx.Bot(), message.Voice)
 		if err != nil {
+			metrics.ErrorsTotal.WithLabelValues("stt").Inc()
 			msg := tu.Message(chatID, "К сожалению не удалось обработать ваше голосовое сообщение.")
 			ctx.Bot().SendMessage(ctx, msg)
 			return err
@@ -79,11 +84,13 @@ func (h *Handler) MessageHandler(ctx *th.Context, message telego.Message) error 
 	}
 
 	if err := h.dialogRepo.AddMessage(message.From.ID, "user", answer); err != nil {
+		metrics.ErrorsTotal.WithLabelValues("db").Inc()
 		return err
 	}
 
 	history, err := h.dialogRepo.GetHistory(message.From.ID)
 	if err != nil {
+		metrics.ErrorsTotal.WithLabelValues("db").Inc()
 		h.dialogRepo.DeleteLastMessage(message.From.ID)
 		return err
 	}
@@ -98,6 +105,7 @@ func (h *Handler) MessageHandler(ctx *th.Context, message telego.Message) error 
 
 	resp, err := client.NewMessage(history, user.Model, user.Role)
 	if err != nil {
+		metrics.ErrorsTotal.WithLabelValues("llm").Inc()
 		h.dialogRepo.DeleteLastMessage(message.From.ID)
 		messageEdit := tu.EditMessageText(chatID, sended.MessageID, "Не удалось получить ответ...")
 		ctx.Bot().EditMessageText(ctx, messageEdit)
@@ -117,6 +125,7 @@ func (h *Handler) MessageHandler(ctx *th.Context, message telego.Message) error 
 
 	result, err := SplitHTML(resp)
 	if err != nil {
+		metrics.ErrorsTotal.WithLabelValues("format").Inc()
 		fmt.Println(resp)
 		msg := tu.Message(chatID, err.Error()).
 			WithReplyMarkup(keyboards.GenerateDummyButton("Сгенерировано " + info.Title))
@@ -162,6 +171,8 @@ func (h *Handler) GenPhoto(ctx *th.Context, message telego.Message) error {
 	}
 	info := GetPhotoModelByApiName(user.Photo)
 
+	metrics.ImagesGeneratedTotal.Inc()
+
 	msg := tu.Message(chatID, "_Генерируем изображение..._").WithParseMode(telego.ModeMarkdown).WithParseMode(telego.ModeMarkdown).
 		WithReplyMarkup(keyboards.GenerateDummyButton("Генерируется " + info.Title))
 	sended, err := ctx.Bot().SendMessage(ctx, msg)
@@ -172,6 +183,7 @@ func (h *Handler) GenPhoto(ctx *th.Context, message telego.Message) error {
 	start := time.Now()
 	photoBytes, err := h.pClient.GeneratePhoto(prompt, user.Photo)
 	if err != nil {
+		metrics.ErrorsTotal.WithLabelValues("genimage").Inc()
 		msg := tu.EditMessageText(chatID, sended.MessageID, "К сожалению не удалось сгенерировать фото.")
 		_, err := ctx.Bot().EditMessageText(ctx, msg)
 		return err
@@ -210,6 +222,8 @@ func (h *Handler) ImageHandler(ctx *th.Context, message telego.Message) error {
 		return err
 	}
 
+	metrics.PhotoRequestsTotal.Inc()
+
 	var client providers.Client
 	provider := GetProviderByUser(user)
 	client = h.GetClientByProvider(provider)
@@ -222,6 +236,7 @@ func (h *Handler) ImageHandler(ctx *th.Context, message telego.Message) error {
 		FileID: message.Photo[len(message.Photo)-1].FileID,
 	})
 	if err != nil {
+		metrics.ErrorsTotal.WithLabelValues("telegram").Inc()
 		msg := tu.Message(chatID, "К сожалению не удалось обработать ваше фото.")
 		_, err := ctx.Bot().SendMessage(ctx, msg)
 		return err
@@ -230,6 +245,7 @@ func (h *Handler) ImageHandler(ctx *th.Context, message telego.Message) error {
 	url := ctx.Bot().FileDownloadURL(file.FilePath)
 	fileData, err := tu.DownloadFile(url)
 	if err != nil {
+		metrics.ErrorsTotal.WithLabelValues("telegram").Inc()
 		msg := tu.Message(chatID, "К сожалению не удалось обработать ваше фото.")
 		_, err := ctx.Bot().SendMessage(ctx, msg)
 		return err
@@ -237,11 +253,13 @@ func (h *Handler) ImageHandler(ctx *th.Context, message telego.Message) error {
 
 	resp, err := client.NewMessageWithPhoto(message.Caption, user.Model, fileData)
 	if err != nil {
+		metrics.ErrorsTotal.WithLabelValues("photo").Inc()
 		messageEdit := tu.EditMessageText(chatID, sended.MessageID, "Не удалось получить ответ...")
 		ctx.Bot().EditMessageText(ctx, messageEdit)
 		return err
 	}
 
+	// Change to HTML?
 	text := md.ConvertMarkdownToTelegramMarkdownV2(resp)
 	messageEdit := tu.EditMessageText(chatID, sended.MessageID, text).
 		WithReplyMarkup(keyboards.GenerateDummyButton("Сгенерировано " + info.Title)).
@@ -257,6 +275,7 @@ func (h *Handler) ClearHandler(ctx *th.Context, message telego.Message) error {
 	chatID := tu.ID(message.From.ID)
 
 	if err := h.dialogRepo.ClearHistory(message.From.ID); err != nil {
+		metrics.ErrorsTotal.WithLabelValues("db").Inc()
 		msg := tu.Message(chatID, "Не удалось очистить историю.")
 		ctx.Bot().SendMessage(ctx, msg)
 		return err

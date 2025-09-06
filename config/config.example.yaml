@@ -20,3 +20,7 @@ webhook:
   port: 8888 # local port for webhook
   enabled: true # false - longpoll | true - webhook
   domain: bot.example.domain.com # webhook domain
+
+prometheus:
+  enabled: true
+  port: 8080
