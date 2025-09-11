@@ -58,6 +58,7 @@
 ### 1. Загрузка репозитория
 ```bash
 git clone https://github.com/tamper000/Freybot
+cd Freybot
 ```
 
 ### 2. Билд docker образа
@@ -67,13 +68,24 @@ sudo docker build -t freybot .
 
 ### 3. Настройка конфига
 ```bash
-micro config/config.example.yaml
 cp config/config.example.yaml config/config.yaml
+micro config/config.yaml
 ```
 
-### 4. Запуск (LongPoll)
+### 4. Запуск
 ```bash
-sudo docker run -v $(pwd)/config/config.yaml:/app/config/config.yaml freybot
+sudo docker run -v $(pwd)/config/config.yaml:/app/config/config.yaml -v $(pwd)/database/bot.db:/app/database/bot.db freybot
+```
+
+## ⚙️ С использованеим готового образа
+
+### 1. Загрузка образа
+```bash
+sudo docker pull ghcr.io/tamper000/freybot:latest
+```
+### 2. Запуск
+```bash
+sudo docker run -v $(pwd)/config/config.yaml:/app/config/config.yaml -v $(pwd)/database/bot.db:/app/database/bot.db ghcr.io/tamper000/freybot
 ```
 
 ---
