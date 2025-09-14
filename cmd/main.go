@@ -58,14 +58,20 @@ func main() {
 		bh, srv = WebHook(ctx, bot, cfg.Webhook.Domain, strconv.Itoa(cfg.Webhook.Port))
 	}
 
+	flux, err := providers.NewFluxClient(cfg.Proxy)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	ionet, pollinations, openrouter := providers.CreateClients(cfg)
-	handlers := handlers.NewHandlers(ionet, pollinations, openrouter, userRepo, dialogRepo)
+	handlers := handlers.NewHandlers(ionet, pollinations, openrouter,
+		userRepo, dialogRepo, flux)
 
 	if err = middlewares.ConfigureRatelimit(ctx, cfg.Telegram.AdminID, cfg.Ratelimit.Rate, cfg.Ratelimit.Time); err != nil {
 		log.Fatal(err)
 	}
 
-	bh.Use(th.PanicRecovery())
+	// bh.Use(th.PanicRecovery())
 	bh.Use(middlewares.OnlyAllowUsers(userRepo, cfg.Telegram.AdminID))
 	bh.Use(middlewares.Ratelimit)
 
@@ -134,6 +140,8 @@ func AddPrivateHandlers(bh *th.BotHandler, handlers *handlers.Handler) {
 	private.HandleMessage(handlers.ChooseRole, th.TextEqual("Роль"))
 	private.HandleMessage(handlers.ChooseRole, th.CommandEqual("role"))
 	private.HandleCallbackQuery(handlers.ChooseRoleCallback, th.CallbackDataPrefix("r_"))
+
+	private.HandleMessage(handlers.EditPhoto, predicate.OnlyPhotoEdit)
 
 	// Clear history
 	private.HandleMessage(handlers.ClearHandler, th.CommandEqual("clear"))

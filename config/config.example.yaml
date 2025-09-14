@@ -24,3 +24,6 @@ webhook:
 prometheus:
   enabled: true
   port: 8080
+
+# used for registration on the flux-1
+proxy: socks5://log:pass@ip:port

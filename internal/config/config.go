@@ -14,6 +14,7 @@ type Config struct {
 	Ratelimit  RatelimitConfig  `mapstructure:"ratelimit"`
 	Webhook    WebhookConfig    `mapstructure:"webhook"`
 	Prometheus PrometheusConfig `mapstructure:"prometheus"`
+	Proxy      string           `mapstructure:"proxy"`
 }
 
 type TelegramConfig struct {

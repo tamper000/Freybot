@@ -2,8 +2,19 @@ package predicate
 
 import (
 	"context"
+	"regexp"
+	"strings"
 
 	"github.com/mymmrac/telego"
+)
+
+var CommandRegexp = regexp.MustCompile(`(?s)^/(\w+)(?:@(\w+))?(?:\s+(.+?)\s*)?$`)
+
+const (
+	CommandMatchCmdGroup         = 1
+	CommandMatchBotUsernameGroup = 2
+	CommandMatchArgsGroup        = 3
+	CommandMatchGroupsLen        = 4
 )
 
 func OnlyAdmin(adminID int64) func(ctx context.Context, update telego.Update) bool {
@@ -42,4 +53,21 @@ func OnlyPhoto(ctx context.Context, update telego.Update) bool {
 	}
 
 	return false
+}
+
+func OnlyPhotoEdit(ctx context.Context, update telego.Update) bool {
+	if update.Message == nil {
+		return false
+	}
+
+	if len(update.Message.Photo) == 0 {
+		return false
+	}
+
+	matches := CommandRegexp.FindStringSubmatch(update.Message.Caption)
+	if len(matches) != CommandMatchGroupsLen {
+		return false
+	}
+
+	return strings.EqualFold(matches[CommandMatchCmdGroup], "edit")
 }

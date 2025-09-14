@@ -18,7 +18,8 @@ import (
 )
 
 func NewHandlers(ioClient providers.Client, pClient providers.ClientPollinations, opClient providers.Client,
-	userRepo repository.UserRepository, dialogRepo repository.DialogRepository) *Handler {
+	userRepo repository.UserRepository, dialogRepo repository.DialogRepository,
+	flux *providers.FluxClient) *Handler {
 
 	return &Handler{
 		ioClient:   ioClient,
@@ -26,6 +27,7 @@ func NewHandlers(ioClient providers.Client, pClient providers.ClientPollinations
 		opClient:   opClient,
 		userRepo:   userRepo,
 		dialogRepo: dialogRepo,
+		flux:       flux,
 	}
 }
 
@@ -289,4 +291,62 @@ func (h *Handler) ClearHandler(ctx *th.Context, message telego.Message) error {
 func (h *Handler) DummyButton(ctx *th.Context, query telego.CallbackQuery) error {
 	ctx.Bot().AnswerCallbackQuery(ctx, tu.CallbackQuery(query.ID))
 	return nil
+}
+
+func (h *Handler) EditPhoto(ctx *th.Context, message telego.Message) error {
+	chatID := tu.ID(message.From.ID)
+	if len(message.Photo) == 0 {
+		msg := tu.Message(chatID, "Кажется вы забыли закрепить фото!")
+		_, err := ctx.Bot().SendMessage(ctx, msg)
+		return err
+	}
+
+	splitted := strings.SplitN(message.Caption, " ", 2)
+	if len(splitted) < 2 {
+		msg := tu.Message(chatID, "Напишите корректный запрос.")
+		_, err := ctx.Bot().SendMessage(ctx, msg)
+		return err
+	}
+
+	prompt := splitted[1]
+
+	file, err := ctx.Bot().GetFile(context.Background(), &telego.GetFileParams{
+		FileID: message.Photo[len(message.Photo)-1].FileID,
+	})
+	if err != nil {
+		metrics.ErrorsTotal.WithLabelValues("telegram").Inc()
+		msg := tu.Message(chatID, "К сожалению не удалось обработать ваше фото.")
+		_, err := ctx.Bot().SendMessage(ctx, msg)
+		return err
+	}
+
+	url := ctx.Bot().FileDownloadURL(file.FilePath)
+	fileData, err := tu.DownloadFile(url)
+	if err != nil {
+		metrics.ErrorsTotal.WithLabelValues("telegram").Inc()
+		msg := tu.Message(chatID, "К сожалению не удалось обработать ваше фото.")
+		_, err := ctx.Bot().SendMessage(ctx, msg)
+		return err
+	}
+
+	msg := tu.Message(chatID, "_Редактируем изображение..._").WithParseMode(telego.ModeMarkdown).WithParseMode(telego.ModeMarkdown)
+	sended, err := ctx.Bot().SendMessage(ctx, msg)
+	if err != nil {
+		return err
+	}
+
+	start := time.Now()
+	photoBytes, err := h.flux.NewImage(fileData, prompt)
+	if err != nil {
+		msg := tu.EditMessageText(chatID, sended.MessageID, "К сожалению не удалось отредактировать фото.")
+		ctx.Bot().EditMessageText(ctx, msg)
+		return err
+	}
+
+	ctx.Bot().DeleteMessage(ctx, tu.Delete(chatID, sended.MessageID))
+	elapsed := time.Since(start)
+
+	photo := tu.Photo(chatID, tu.FileFromBytes(photoBytes, "ai_image.jpg")).WithCaption(fmt.Sprintf("На редактирование было затрачено _%.2f сек_.", elapsed.Seconds())).WithParseMode(telego.ModeMarkdown)
+	_, err = ctx.Bot().SendPhoto(ctx, photo)
+	return err
 }

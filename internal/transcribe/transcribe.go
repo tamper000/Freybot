@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"io"
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
@@ -71,18 +70,12 @@ func TranscribeAudio(audioData []byte) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	responseData, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return "", err
-	}
-
 	if resp.StatusCode != http.StatusOK {
 		return "", errors.New("Bad status code")
 	}
 
 	var stt STTResponse
-	err = json.Unmarshal(responseData, &stt)
-	if err != nil {
+	if err := json.NewDecoder(resp.Body).Decode(&stt); err != nil {
 		return "", nil
 	}
 
