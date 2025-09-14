@@ -310,6 +310,8 @@ func (h *Handler) EditPhoto(ctx *th.Context, message telego.Message) error {
 
 	prompt := splitted[1]
 
+	metrics.ImagesEditedTotal.Inc()
+
 	file, err := ctx.Bot().GetFile(context.Background(), &telego.GetFileParams{
 		FileID: message.Photo[len(message.Photo)-1].FileID,
 	})
@@ -332,12 +334,14 @@ func (h *Handler) EditPhoto(ctx *th.Context, message telego.Message) error {
 	msg := tu.Message(chatID, "_Редактируем изображение..._").WithParseMode(telego.ModeMarkdown).WithParseMode(telego.ModeMarkdown)
 	sended, err := ctx.Bot().SendMessage(ctx, msg)
 	if err != nil {
+		metrics.ErrorsTotal.WithLabelValues("telegram").Inc()
 		return err
 	}
 
 	start := time.Now()
 	photoBytes, err := h.flux.NewImage(fileData, prompt)
 	if err != nil {
+		metrics.ErrorsTotal.WithLabelValues("edit").Inc()
 		msg := tu.EditMessageText(chatID, sended.MessageID, "К сожалению не удалось отредактировать фото.")
 		ctx.Bot().EditMessageText(ctx, msg)
 		return err

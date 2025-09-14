@@ -25,10 +25,15 @@ var ImagesGeneratedTotal = promauto.NewCounter(prometheus.CounterOpts{
 	Help: "Total number of images generated with AI",
 })
 
+var ImagesEditedTotal = promauto.NewCounter(prometheus.CounterOpts{
+	Name: "ai_images_edit_total",
+	Help: "Total number of images edited with AI",
+})
+
 var ErrorsTotal = promauto.NewCounterVec(prometheus.CounterOpts{
 	Name: "ai_errors_total",
 	Help: "Total number of errors occurred in the bot",
-}, []string{"type"}) // stt, llm, db, format, genimage, photo, telegram
+}, []string{"type"}) // stt, llm, db, format, genimage, photo, telegram, edit
 
 var ModelUsageTotal = promauto.NewCounterVec(prometheus.CounterOpts{
 	Name: "ai_model_usage_total",
