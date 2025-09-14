@@ -34,6 +34,9 @@ var MainKeyboard = tu.Keyboard(
 		tu.KeyboardButton("Фото модели"),
 	),
 	tu.KeyboardRow(
+		tu.KeyboardButton("Редактирование фото"),
+	),
+	tu.KeyboardRow(
 		tu.KeyboardButton("Роль"),
 	),
 ).WithResizeKeyboard().WithInputFieldPlaceholder("Выбери модель или напиши вопрос.")
@@ -46,6 +49,13 @@ var RolesKeyboard = tu.InlineKeyboard(
 	),
 	tu.InlineKeyboardRow(
 		tu.InlineKeyboardButton("Злой матершиник").WithCallbackData("r_evil"),
+	),
+)
+
+var EditModelsKeyboard = tu.InlineKeyboard(
+	tu.InlineKeyboardRow(
+		tu.InlineKeyboardButton("Qwen").WithCallbackData("e_qwen"),
+		tu.InlineKeyboardButton("Gemini").WithCallbackData("e_gemini"),
 	),
 )
 

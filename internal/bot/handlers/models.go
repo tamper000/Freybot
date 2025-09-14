@@ -15,7 +15,6 @@ func (h *Handler) ChooseGroup(ctx *th.Context, message telego.Message) error {
 	msg := tu.Message(chatID, "_Выбери группу модели:_").WithParseMode(telego.ModeMarkdown).WithReplyMarkup(keyboards.GroupKeyboard)
 	_, err := ctx.Bot().SendMessage(ctx, msg)
 	return err
-
 }
 
 func (h *Handler) ChooseModel(ctx *th.Context, query telego.CallbackQuery) error {
@@ -84,6 +83,23 @@ func (h *Handler) ChooseRoleCallback(ctx *th.Context, query telego.CallbackQuery
 	ctx.Bot().AnswerCallbackQuery(ctx.Context(), tu.CallbackQuery(query.ID))
 	role := strings.Replace(query.Data, "r_", "", 1)
 	h.userRepo.UpdateRole(query.From.ID, role)
+
+	msg := tu.EditMessageText(tu.ID(query.From.ID), query.Message.GetMessageID(), "*Выбор завершен!*").WithParseMode(telego.ModeMarkdown)
+	ctx.Bot().EditMessageText(ctx.Context(), msg)
+	return nil
+}
+
+func (h *Handler) ChooseEditModel(ctx *th.Context, message telego.Message) error {
+	chatID := tu.ID(message.From.ID)
+	msg := tu.Message(chatID, "_Выбери модель для редактирования фото:_").WithParseMode(telego.ModeMarkdown).WithReplyMarkup(keyboards.EditModelsKeyboard)
+	_, err := ctx.Bot().SendMessage(ctx, msg)
+	return err
+}
+
+func (h *Handler) ChooseEditCallback(ctx *th.Context, query telego.CallbackQuery) error {
+	ctx.Bot().AnswerCallbackQuery(ctx.Context(), tu.CallbackQuery(query.ID))
+	model := strings.Replace(query.Data, "e_", "", 1)
+	h.userRepo.UpdateEditModel(query.From.ID, model)
 
 	msg := tu.EditMessageText(tu.ID(query.From.ID), query.Message.GetMessageID(), "*Выбор завершен!*").WithParseMode(telego.ModeMarkdown)
 	ctx.Bot().EditMessageText(ctx.Context(), msg)

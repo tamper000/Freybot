@@ -308,6 +308,19 @@ func (h *Handler) EditPhoto(ctx *th.Context, message telego.Message) error {
 		return err
 	}
 
+	user, err := h.userRepo.GetUser(message.From.ID)
+	if err != nil {
+		msg := tu.Message(chatID, "Произошла неизвестная ошибка.")
+		ctx.Bot().SendMessage(ctx, msg)
+		return err
+	}
+
+	if user.Edit == "" {
+		msg := tu.Message(chatID, "Для начала выберите одну из моделей!")
+		_, err := ctx.Bot().SendMessage(ctx, msg)
+		return err
+	}
+
 	prompt := splitted[1]
 
 	metrics.ImagesEditedTotal.Inc()
@@ -339,7 +352,7 @@ func (h *Handler) EditPhoto(ctx *th.Context, message telego.Message) error {
 	}
 
 	start := time.Now()
-	photoBytes, err := h.flux.NewImage(fileData, prompt)
+	photoBytes, err := h.flux.NewImage(fileData, prompt, user.Edit)
 	if err != nil {
 		metrics.ErrorsTotal.WithLabelValues("edit").Inc()
 		msg := tu.EditMessageText(chatID, sended.MessageID, "К сожалению не удалось отредактировать фото.")
@@ -350,7 +363,8 @@ func (h *Handler) EditPhoto(ctx *th.Context, message telego.Message) error {
 	ctx.Bot().DeleteMessage(ctx, tu.Delete(chatID, sended.MessageID))
 	elapsed := time.Since(start)
 
-	photo := tu.Photo(chatID, tu.FileFromBytes(photoBytes, "ai_image.jpg")).WithCaption(fmt.Sprintf("На редактирование было затрачено _%.2f сек_.", elapsed.Seconds())).WithParseMode(telego.ModeMarkdown)
+	photo := tu.Photo(chatID, tu.FileFromBytes(photoBytes, "ai_image.jpg")).WithCaption(fmt.Sprintf("На редактирование было затрачено _%.2f сек_.", elapsed.Seconds())).WithParseMode(telego.ModeMarkdown).
+		WithReplyMarkup(keyboards.GenerateDummyButton("Сгенерировано " + strings.Title(user.Edit)))
 	_, err = ctx.Bot().SendPhoto(ctx, photo)
 	return err
 }

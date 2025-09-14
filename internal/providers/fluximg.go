@@ -59,7 +59,7 @@ func NewFluxClient(proxyStr string) (*FluxClient, error) {
 	return &FluxClient{dialer: dialer}, nil
 }
 
-func (flux *FluxClient) NewImage(photoBytes []byte, prompt string) ([]byte, error) {
+func (flux *FluxClient) NewImage(photoBytes []byte, prompt, model string) ([]byte, error) {
 	jar, _ := cookiejar.New(nil)
 	clientWithProxy := &http.Client{
 		Transport: &http.Transport{Dial: flux.dialer.Dial},
@@ -77,12 +77,12 @@ func (flux *FluxClient) NewImage(photoBytes []byte, prompt string) ([]byte, erro
 
 	return flux.generateImage(
 		client,
-		photoBytes, prompt,
+		photoBytes, prompt, model,
 	)
 }
 
 func (flux *FluxClient) generateImage(client *http.Client,
-	photoBytes []byte, prompt string) ([]byte, error) {
+	photoBytes []byte, prompt, model string) ([]byte, error) {
 	var buf bytes.Buffer
 	writer := multipart.NewWriter(&buf)
 
@@ -99,28 +99,27 @@ func (flux *FluxClient) generateImage(client *http.Client,
 		return []byte{}, err
 	}
 
-	// fields := map[string]string{
-	// 	"prompt":         prompt,
-	// 	"model":          "qwen-image-edit",
-	// 	"aspect_ratio":   "match_input_image",
-	// 	"guidance":       "10",
-	// 	"steps":          "28",
-	// 	"quality":        "85",
-	// 	"go_fast":        "false",
-	// 	"output_format":  "jpeg",
-	// 	"output_quality": "100",
-	// }
-
-	// for key, value := range fields {
-	// 	if err := writer.WriteField(key, value); err != nil {
-	// 		return []byte{}, err
-	// 	}
-	// }
-
-	fields := map[string]string{
-		"prompt":        prompt,
-		"model":         "nano-banana",
-		"output_format": "jpg",
+	var fields map[string]string
+	if model == "qwen" {
+		fields = map[string]string{
+			"prompt":         prompt,
+			"model":          "qwen-image-edit",
+			"aspect_ratio":   "match_input_image",
+			"guidance":       "10",
+			"steps":          "28",
+			"quality":        "85",
+			"go_fast":        "false",
+			"output_format":  "jpeg",
+			"output_quality": "100",
+		}
+	} else if model == "gemini" {
+		fields = map[string]string{
+			"prompt":        prompt,
+			"model":         "nano-banana",
+			"output_format": "jpg",
+		}
+	} else {
+		return []byte{}, errors.New("model not selected")
 	}
 
 	for key, value := range fields {

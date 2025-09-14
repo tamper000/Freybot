@@ -16,6 +16,7 @@ type UserRepository interface {
 	UpdateGroup(userID int64, group string) error
 	UpdateTextModel(userID int64, model string) error
 	UpdatePhotoModel(userID int64, model string) error
+	UpdateEditModel(userID int64, model string) error
 }
 
 type UserRepo struct {
@@ -73,4 +74,10 @@ func (r *UserRepo) UpdatePhotoModel(userID int64, model string) error {
 	return r.db.Model(&models.User{}).
 		Where("id = ?", userID).
 		Update("Photo", model).Error
+}
+
+func (r *UserRepo) UpdateEditModel(userID int64, model string) error {
+	return r.db.Model(&models.User{}).
+		Where("id = ?", userID).
+		Update("Edit", model).Error
 }

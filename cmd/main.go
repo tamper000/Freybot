@@ -141,6 +141,10 @@ func AddPrivateHandlers(bh *th.BotHandler, handlers *handlers.Handler) {
 	private.HandleMessage(handlers.ChooseRole, th.CommandEqual("role"))
 	private.HandleCallbackQuery(handlers.ChooseRoleCallback, th.CallbackDataPrefix("r_"))
 
+	private.HandleMessage(handlers.ChooseEditModel, th.TextEqual("Редактирование фото"))
+	private.HandleMessage(handlers.ChooseEditModel, th.CommandEqual("edit"))
+	private.HandleCallbackQuery(handlers.ChooseEditCallback, th.CallbackDataPrefix("e_"))
+
 	private.HandleMessage(handlers.EditPhoto, predicate.OnlyPhotoEdit)
 
 	// Clear history

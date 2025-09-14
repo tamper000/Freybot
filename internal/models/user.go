@@ -7,4 +7,5 @@ type User struct {
 	Group    string
 	Photo    string
 	Role     string
+	Edit     string
 }
