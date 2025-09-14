@@ -1,6 +1,6 @@
 services:
   telegram-bot:
-    build: .
+    image: ghcr.io/tamper000/freybot
     container_name: freybot
     volumes:
       - ./config/config.yaml:/app/config/config.yaml
