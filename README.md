@@ -74,7 +74,7 @@ micro config/config.yaml
 
 ### 4. Запуск
 ```bash
-sudo docker run -v $(pwd)/config/config.yaml:/app/config/config.yaml -v $(pwd)/database/bot.db:/app/database/bot.db freybot
+sudo docker run -v $(pwd)/config/config.yaml:/app/config/config.yaml -v $(pwd)/database/bot.db:/app/database/bot.db -p 8888:8888 freybot
 ```
 
 ## ⚙️ С использованеим готового образа
@@ -85,7 +85,7 @@ sudo docker pull ghcr.io/tamper000/freybot:latest
 ```
 ### 2. Запуск
 ```bash
-sudo docker run -v $(pwd)/config/config.yaml:/app/config/config.yaml -v $(pwd)/database/bot.db:/app/database/bot.db ghcr.io/tamper000/freybot
+sudo docker run -v $(pwd)/config/config.yaml:/app/config/config.yaml -v $(pwd)/database/bot.db:/app/database/bot.db -p 8888:8888 ghcr.io/tamper000/freybot
 ```
 
 ---
