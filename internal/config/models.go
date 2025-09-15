@@ -52,6 +52,7 @@ var gptModels = []AIModel{
 }
 
 var qwenModels = []AIModel{
+	{Title: "Qwen3-Next", ApiName: "Qwen/Qwen3-Next-80B-A3B-Instruct", Provider: IoNet},
 	{Title: "Qwen3-235B", ApiName: "qwen/qwen3-235b-a22b:free", Provider: OpenRouter},
 	{Title: "Qwen3-Coder", ApiName: "Intel/Qwen3-Coder-480B-A35B-Instruct-int4-mixed-ar", Provider: IoNet},
 	{Title: "Qwen3-Coder 2", ApiName: "qwen/qwen3-coder:free", Provider: OpenRouter},
