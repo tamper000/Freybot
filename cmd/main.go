@@ -49,6 +49,10 @@ func main() {
 	}
 	bot.DeleteWebhook(ctx, nil)
 
+	if err := SetCommands(ctx, bot); err != nil {
+		log.Fatal(err)
+	}
+
 	var bh *th.BotHandler
 	var srv *fasthttp.Server
 
@@ -211,4 +215,18 @@ func WebHook(ctx context.Context, bot *telego.Bot, domain, port string) (*th.Bot
 	}
 
 	return bh, srv
+}
+
+func SetCommands(ctx context.Context, bot *telego.Bot) error {
+	return bot.SetMyCommands(ctx, &telego.SetMyCommandsParams{
+		Commands: []telego.BotCommand{
+			telego.BotCommand{Command: "start", Description: "Приветствие и помощь"},
+			telego.BotCommand{Command: "text", Description: "Текстовые модели"},
+			telego.BotCommand{Command: "photo", Description: "Генерация фото"},
+			telego.BotCommand{Command: "role", Description: "Выбор роли для ИИ"},
+			telego.BotCommand{Command: "clear", Description: "Очистить историю"},
+			telego.BotCommand{Command: "gen", Description: "Генерация фото"},
+			telego.BotCommand{Command: "edit", Description: "Редактирование фото"},
+		},
+	})
 }
