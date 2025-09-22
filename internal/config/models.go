@@ -86,6 +86,7 @@ var otherModels = []AIModel{
 	{Title: "Llama 4 Maverick", ApiName: "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8", Provider: IoNet, Image: true},
 	{Title: "GLM 4.5 Air", ApiName: "z-ai/glm-4.5-air:free", Provider: OpenRouter},
 	{Title: "Kimi K2", ApiName: "moonshotai/kimi-k2:free", Provider: OpenRouter},
+	{Title: "Grok 4 fast", ApiName: "x-ai/grok-4-fast:free", Provider: OpenRouter},
 }
 
 var PhotoModels = []AIModel{
