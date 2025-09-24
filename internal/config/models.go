@@ -44,7 +44,7 @@ const (
 var gptModels = []AIModel{
 	// {Title: "GPT-4.1", ApiName: "openai-large", Image: true, Provider: Pollinations},
 	{Title: "GPT-4.1 Nano", ApiName: "openai", Image: true, Provider: Pollinations},
-	{Title: "GPT-5 Nano", ApiName: "gpt-5-nano", Image: true, Provider: Pollinations},
+	{Title: "GPT-5", ApiName: "openai-large", Image: true, Provider: Pollinations},
 	{Title: "GPT-OSS", ApiName: "openai/gpt-oss-120b", Provider: IoNet},
 	{Title: "GPT-OSS-20b", ApiName: "openai/gpt-oss-20b", Provider: IoNet},
 	{Title: "GPT-OSS-20b 2", ApiName: "openai/gpt-oss-20b:free", Provider: OpenRouter},
