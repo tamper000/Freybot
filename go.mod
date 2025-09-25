@@ -5,11 +5,13 @@ go 1.24.5
 require (
 	github.com/allegro/bigcache/v3 v3.1.0
 	github.com/google/uuid v1.6.0
+	github.com/microcosm-cc/bluemonday v1.0.27
 	github.com/mymmrac/telego v1.2.0
 	github.com/openai/openai-go v1.12.0
 	github.com/prometheus/client_golang v1.23.2
 	github.com/spf13/viper v1.20.1
 	github.com/valyala/fasthttp v1.64.0
+	github.com/yuin/goldmark v1.7.13
 	github.com/zavitkov/tg-markdown v1.0.1
 	golang.org/x/net v0.44.0
 	gorm.io/driver/sqlite v1.6.0
@@ -18,6 +20,7 @@ require (
 
 require (
 	github.com/andybalholm/brotli v1.2.0 // indirect
+	github.com/aymerick/douceur v0.2.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bytedance/sonic v1.13.3 // indirect
 	github.com/bytedance/sonic/loader v0.2.4 // indirect
@@ -25,6 +28,7 @@ require (
 	github.com/cloudwego/base64x v0.1.5 // indirect
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
+	github.com/gorilla/css v1.0.1 // indirect
 	github.com/grbit/go-json v0.11.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect

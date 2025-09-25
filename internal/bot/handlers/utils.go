@@ -1,18 +1,32 @@
 package handlers
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"strings"
 
+	"github.com/microcosm-cc/bluemonday"
 	"github.com/mymmrac/telego"
 	tu "github.com/mymmrac/telego/telegoutil"
 	"github.com/tamper000/freybot/internal/config"
 	"github.com/tamper000/freybot/internal/models"
 	"github.com/tamper000/freybot/internal/providers"
 	"github.com/tamper000/freybot/internal/transcribe"
+	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/extension"
 	"golang.org/x/net/html"
 )
+
+var mdParser = goldmark.New(goldmark.WithExtensions(extension.GFM))
+var htmlSanitizer = bluemonday.StrictPolicy()
+
+func init() {
+	htmlSanitizer.AllowElements("b", "strong", "i", "em", "u", "ins", "s", "strike", "del", "span", "tg-spoiler", "a", "code", "pre", "blockquote")
+	htmlSanitizer.AllowAttrs("class").OnElements("span", "tg-spoiler", "pre", "blockquote")
+	htmlSanitizer.AllowAttrs("href").OnElements("a")
+	htmlSanitizer.AllowAttrs("expandable").OnElements("blockquote")
+}
 
 func GetModelsByGroup(group string) []config.AIModel {
 	return config.Models[config.ModelGroup(group)]
@@ -74,6 +88,18 @@ func GetPhotoModelByApiName(name string) config.AIModel {
 	}
 
 	return config.AIModel{}
+}
+
+func convertParseMode(text string) (string, error) {
+	var buf bytes.Buffer
+	if err := mdParser.Convert([]byte(text), &buf); err != nil {
+		return "", err
+	}
+
+	data := buf.String()
+	sanitized := htmlSanitizer.Sanitize(data)
+
+	return sanitized, nil
 }
 
 func splitText(text string) []string {

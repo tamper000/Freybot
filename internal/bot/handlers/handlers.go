@@ -122,8 +122,13 @@ func (h *Handler) MessageHandler(ctx *th.Context, message telego.Message) error 
 	h.dialogRepo.AddMessage(message.From.ID, "assistant", resp)
 	ctx.Bot().DeleteMessage(ctx, tu.Delete(chatID, sended.MessageID))
 
-	resp = strings.ReplaceAll(resp, "<br>", "\n")
-	resp = strings.ReplaceAll(resp, `\n`, "\n")
+	resp, err = convertParseMode(resp)
+	if err != nil {
+		msg := tu.Message(chatID, "Нейросеть вернула битый текст").
+			WithReplyMarkup(keyboards.GenerateDummyButton("Сгенерировано " + info.Title))
+		ctx.Bot().SendMessage(ctx, msg)
+		return err
+	}
 
 	result, err := SplitHTML(resp)
 	if err != nil {
