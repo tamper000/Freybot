@@ -42,8 +42,8 @@ const (
 )
 
 var gptModels = []AIModel{
-	// {Title: "GPT-4.1", ApiName: "openai-large", Image: true, Provider: Pollinations},
-	{Title: "GPT-4.1 Nano", ApiName: "openai", Image: true, Provider: Pollinations},
+	{Title: "GPT-5 Nano", ApiName: "openai-fast", Image: true, Provider: Pollinations},
+	{Title: "GPT-5 Mini", ApiName: "openai", Image: true, Provider: Pollinations},
 	{Title: "GPT-5", ApiName: "openai-large", Image: true, Provider: Pollinations},
 	{Title: "GPT-OSS", ApiName: "openai/gpt-oss-120b", Provider: IoNet},
 	{Title: "GPT-OSS-20b", ApiName: "openai/gpt-oss-20b", Provider: IoNet},
@@ -59,7 +59,6 @@ var qwenModels = []AIModel{
 	{Title: "Qwen3-235B-Thinking", ApiName: "Qwen/Qwen3-235B-A22B-Thinking-2507", Provider: IoNet},
 	{Title: "Qwen3-30B", ApiName: "qwen/qwen3-30b-a3b:free", Provider: OpenRouter},
 	{Title: "Qwen2.5 VL", ApiName: "Qwen/Qwen2.5-VL-32B-Instruct", Image: true, Provider: IoNet},
-	{Title: "Qwen2.5-FAST", ApiName: "featherless/qwerky-72b:free", Provider: OpenRouter},
 }
 
 var deepSeekModels = []AIModel{
