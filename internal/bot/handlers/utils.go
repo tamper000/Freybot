@@ -90,6 +90,16 @@ func GetPhotoModelByApiName(name string) config.AIModel {
 	return config.AIModel{}
 }
 
+func GetEditModelByApiName(name string) config.AIModel {
+	for _, info := range config.EditModels {
+		if info.ApiName == name {
+			return info
+		}
+	}
+
+	return config.AIModel{}
+}
+
 func convertParseMode(text string) (string, error) {
 	var buf bytes.Buffer
 	if err := mdParser.Convert([]byte(text), &buf); err != nil {

@@ -133,7 +133,6 @@ func (h *Handler) MessageHandler(ctx *th.Context, message telego.Message) error 
 	result, err := SplitHTML(resp)
 	if err != nil {
 		metrics.ErrorsTotal.WithLabelValues("format").Inc()
-		fmt.Println(resp)
 		msg := tu.Message(chatID, err.Error()).
 			WithReplyMarkup(keyboards.GenerateDummyButton("Сгенерировано " + info.Title))
 		ctx.Bot().SendMessage(ctx, msg)
@@ -349,7 +348,10 @@ func (h *Handler) EditPhoto(ctx *th.Context, message telego.Message) error {
 		return err
 	}
 
-	msg := tu.Message(chatID, "_Редактируем изображение..._").WithParseMode(telego.ModeMarkdown).WithParseMode(telego.ModeMarkdown)
+	info := GetEditModelByApiName(user.Edit)
+
+	msg := tu.Message(chatID, "_Редактируем изображение..._").WithParseMode(telego.ModeMarkdown).WithParseMode(telego.ModeMarkdown).
+		WithReplyMarkup(keyboards.GenerateDummyButton("Генерируется " + info.Title))
 	sended, err := ctx.Bot().SendMessage(ctx, msg)
 	if err != nil {
 		metrics.ErrorsTotal.WithLabelValues("telegram").Inc()
@@ -369,7 +371,7 @@ func (h *Handler) EditPhoto(ctx *th.Context, message telego.Message) error {
 	elapsed := time.Since(start)
 
 	photo := tu.Photo(chatID, tu.FileFromBytes(photoBytes, "ai_image.jpg")).WithCaption(fmt.Sprintf("На редактирование было затрачено _%.2f сек_.", elapsed.Seconds())).WithParseMode(telego.ModeMarkdown).
-		WithReplyMarkup(keyboards.GenerateDummyButton("Сгенерировано " + strings.Title(user.Edit)))
+		WithReplyMarkup(keyboards.GenerateDummyButton("Сгенерировано " + info.Title))
 	_, err = ctx.Bot().SendPhoto(ctx, photo)
 	return err
 }

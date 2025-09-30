@@ -91,7 +91,7 @@ func (h *Handler) ChooseRoleCallback(ctx *th.Context, query telego.CallbackQuery
 
 func (h *Handler) ChooseEditModel(ctx *th.Context, message telego.Message) error {
 	chatID := tu.ID(message.From.ID)
-	msg := tu.Message(chatID, "_Выбери модель для редактирования фото:_").WithParseMode(telego.ModeMarkdown).WithReplyMarkup(keyboards.EditModelsKeyboard)
+	msg := tu.Message(chatID, "_Выбери модель для редактирования фото:_").WithParseMode(telego.ModeMarkdown).WithReplyMarkup(keyboards.EditKeyboard)
 	_, err := ctx.Bot().SendMessage(ctx, msg)
 	return err
 }

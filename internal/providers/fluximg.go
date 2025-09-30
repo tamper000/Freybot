@@ -64,11 +64,11 @@ func (flux *FluxClient) NewImage(photoBytes []byte, prompt, model string) ([]byt
 	clientWithProxy := &http.Client{
 		Transport: &http.Transport{Dial: flux.dialer.Dial},
 		Jar:       jar,
-		Timeout:   time.Second * 10,
+		Timeout:   time.Second * 30,
 	}
 	client := &http.Client{
 		Jar:     jar,
-		Timeout: time.Second * 10,
+		Timeout: time.Second * 30,
 	}
 
 	if err := flux.register(clientWithProxy, client); err != nil {
@@ -99,26 +99,41 @@ func (flux *FluxClient) generateImage(client *http.Client,
 		return []byte{}, err
 	}
 
+	var url string
 	var fields map[string]string
-	if model == "qwen" {
+
+	switch model {
+	case "qwen":
 		fields = map[string]string{
 			"prompt":         prompt,
 			"model":          "qwen-image-edit",
 			"aspect_ratio":   "match_input_image",
 			"guidance":       "10",
-			"steps":          "28",
-			"quality":        "85",
+			"steps":          "30",
+			"quality":        "95",
 			"go_fast":        "false",
 			"output_format":  "jpeg",
 			"output_quality": "100",
 		}
-	} else if model == "gemini" {
+		url = "https://flux-1.net/api/tools/qwen-image-edit"
+	case "gemini":
 		fields = map[string]string{
 			"prompt":        prompt,
 			"model":         "nano-banana",
 			"output_format": "jpg",
 		}
-	} else {
+		url = "https://flux-1.net/api/tools/nano-banana"
+	case "kontext":
+		fields = map[string]string{
+			"prompt":       prompt,
+			"model":        "pro",
+			"aspect_ratio": "match_input_image",
+			"guidance":     "10",
+			"steps":        "30",
+			"quality":      "95",
+		}
+		url = "https://flux-1.net/api/tools/flux-kontext"
+	default:
 		return []byte{}, errors.New("model not selected")
 	}
 
@@ -133,7 +148,7 @@ func (flux *FluxClient) generateImage(client *http.Client,
 	}
 
 	resp, err := client.Post(
-		"https://flux-1.net/api/tools/qwen-image-edit",
+		url,
 		writer.FormDataContentType(),
 		&buf,
 	)

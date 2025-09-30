@@ -92,12 +92,15 @@ var otherModels = []AIModel{
 
 var PhotoModels = []AIModel{
 	{Title: "Flux", ApiName: "flux"},
-	{Title: "Flux Pro", ApiName: "flux-pro"},
-	{Title: "Flux Dev", ApiName: "flux-dev"},
 	{Title: "Kontext", ApiName: "kontext"},
 	{Title: "Turbo 18+", ApiName: "turbo"},
-	{Title: "GPTImage", ApiName: "gptimage"},
-	{Title: "SDXL Turbo", ApiName: "sdxl-turbo"},
+	{Title: "Gemini", ApiName: "nanobanana"},
+}
+
+var EditModels = []AIModel{
+	{Title: "Qwen", ApiName: "qwen"},
+	{Title: "Gemini", ApiName: "gemini"},
+	{Title: "Kontext", ApiName: "kontext"},
 }
 
 var ModelGroupOrder = []ModelGroup{

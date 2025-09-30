@@ -21,10 +21,18 @@ func init() {
 	}
 
 	ImageKeyboard = generateTelegramKeyboard(imageButtons, 2)
+
+	var editButtons []telego.InlineKeyboardButton
+	for _, model := range config.EditModels {
+		editButtons = append(editButtons, tu.InlineKeyboardButton(model.Title).WithCallbackData("e_"+model.ApiName))
+	}
+
+	EditKeyboard = generateTelegramKeyboard(editButtons, 2)
 }
 
 var GroupKeyboard *telego.InlineKeyboardMarkup
 var ImageKeyboard *telego.InlineKeyboardMarkup
+var EditKeyboard *telego.InlineKeyboardMarkup
 
 var MainKeyboard = tu.Keyboard(
 	tu.KeyboardRow(
@@ -52,13 +60,6 @@ var RolesKeyboard = tu.InlineKeyboard(
 	),
 )
 
-var EditModelsKeyboard = tu.InlineKeyboard(
-	tu.InlineKeyboardRow(
-		tu.InlineKeyboardButton("Qwen").WithCallbackData("e_qwen"),
-		tu.InlineKeyboardButton("Gemini").WithCallbackData("e_gemini"),
-	),
-)
-
 func GenerateModelsKeyboard(info []config.AIModel) *telego.InlineKeyboardMarkup {
 	var modelButtons []telego.InlineKeyboardButton
 	for _, modelInfo := range info {
@@ -66,14 +67,7 @@ func GenerateModelsKeyboard(info []config.AIModel) *telego.InlineKeyboardMarkup 
 		if modelInfo.Image {
 			suffix += " 🌆"
 		}
-		switch modelInfo.Provider {
-		case config.Pollinations:
-			suffix += "🟧"
-		case config.IoNet:
-			suffix += "🟩"
-		case config.OpenRouter:
-			suffix += "🟧"
-		}
+
 		button := tu.InlineKeyboardButton(modelInfo.Title + suffix).WithCallbackData("m_" + modelInfo.CallbackData)
 		modelButtons = append(modelButtons, button)
 	}
