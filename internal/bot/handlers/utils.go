@@ -260,6 +260,8 @@ func (h *Handler) GetClientByProvider(provider config.ProviderModel) providers.C
 		return h.pClient
 	case config.OpenRouter:
 		return h.opClient
+	case config.ChAt:
+		return h.chAtClient
 	}
 
 	return nil

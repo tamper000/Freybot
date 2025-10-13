@@ -30,6 +30,7 @@ const (
 	OpenRouter   ProviderModel = "OpenRouter"
 	IoNet        ProviderModel = "IoNet"
 	Pollinations ProviderModel = "Pollinations"
+	ChAt         ProviderModel = "ChAt"
 )
 
 const (
@@ -38,13 +39,18 @@ const (
 	DeepSeekGroup ModelGroup = "DeepSeek"
 	MistralGroup  ModelGroup = "Mistral"
 	GeminiGroup   ModelGroup = "Gemini"
+	ClaudeGroup   ModelGroup = "Claude"
 	OtherGroup    ModelGroup = "Other"
 )
 
 var gptModels = []AIModel{
-	{Title: "GPT-4.1 Nano", ApiName: "openai-fast", Image: true, Provider: Pollinations},
+	{Title: "GPT-5", ApiName: "gpt-5", Image: true, Provider: ChAt},
+	{Title: "GPT-5 Mini", ApiName: "gpt-5-mini", Image: true, Provider: ChAt},
 	{Title: "GPT-5 Nano", ApiName: "openai", Image: true, Provider: Pollinations},
-	{Title: "GPT-5", ApiName: "openai-large", Image: true, Provider: Pollinations},
+	{Title: "GPT-5 2", ApiName: "openai-large", Image: true, Provider: Pollinations},
+	{Title: "GPT-4.1", ApiName: "gpt-41", Image: true, Provider: ChAt},
+	{Title: "GPT-4.1 Mini", ApiName: "gpt-4.1-mini", Image: true, Provider: Pollinations},
+	{Title: "GPT-4.1 Nano", ApiName: "openai-fast", Image: true, Provider: Pollinations},
 	{Title: "GPT-OSS", ApiName: "openai/gpt-oss-120b", Provider: IoNet},
 	{Title: "GPT-OSS-20b", ApiName: "openai/gpt-oss-20b", Provider: IoNet},
 	{Title: "GPT-OSS-20b 2", ApiName: "openai/gpt-oss-20b:free", Provider: OpenRouter},
@@ -78,6 +84,18 @@ var geminiModels = []AIModel{
 	{Title: "Gemma 3", ApiName: "google/gemma-3-27b-it:free", Image: true, Provider: OpenRouter},
 	{Title: "Gemini 2.5 Lite", ApiName: "gemini", Provider: Pollinations, Image: true},
 	{Title: "Gemini 2.5 Search", ApiName: "gemini-search", Provider: Pollinations, Image: true},
+	{Title: "Gemini 2.5 Pro", ApiName: "gemini-2.5-pro", Provider: ChAt, Image: true},
+	{Title: "Gemini 2.5 Flash", ApiName: "gemini-2.5-flash", Provider: ChAt, Image: true},
+}
+
+var claudeModels = []AIModel{
+	{Title: "Claude 4.5 Sonnet", ApiName: "claude-4.5-sonnet", Image: true, Provider: ChAt},
+	{Title: "Claude 4.1 Opus", ApiName: "claude-4.1-opus", Image: true, Provider: ChAt},
+	{Title: "Claude 4 Sonnet", ApiName: "claude-4-sonnet", Image: true, Provider: ChAt},
+	{Title: "Claude 4 Opus", ApiName: "claude-4-opus", Image: true, Provider: ChAt},
+	{Title: "Claude 3.7 Sonnet", ApiName: "claude-3.7-sonnet", Image: true, Provider: ChAt},
+	{Title: "Claude 3.5 Sonnet", ApiName: "claude-3.5-sonnet", Image: true, Provider: ChAt},
+	{Title: "Claude 3.7 Haiku", ApiName: "claude-3.5-haiku", Image: true, Provider: ChAt},
 }
 
 var otherModels = []AIModel{
@@ -104,6 +122,7 @@ var ModelGroupOrder = []ModelGroup{
 	DeepSeekGroup,
 	MistralGroup,
 	GeminiGroup,
+	ClaudeGroup,
 	OtherGroup,
 }
 
@@ -114,4 +133,5 @@ var Models = map[ModelGroup][]AIModel{
 	MistralGroup:  mistralModels,
 	OtherGroup:    otherModels,
 	GeminiGroup:   geminiModels,
+	ClaudeGroup:   claudeModels,
 }

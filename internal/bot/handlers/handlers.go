@@ -18,6 +18,7 @@ import (
 )
 
 func NewHandlers(ioClient providers.Client, pClient providers.ClientPollinations, opClient providers.Client,
+	chAtClient providers.Client,
 	userRepo repository.UserRepository, dialogRepo repository.DialogRepository,
 	flux *providers.FluxClient) *Handler {
 
@@ -25,6 +26,7 @@ func NewHandlers(ioClient providers.Client, pClient providers.ClientPollinations
 		ioClient:   ioClient,
 		pClient:    pClient,
 		opClient:   opClient,
+		chAtClient: chAtClient,
 		userRepo:   userRepo,
 		dialogRepo: dialogRepo,
 		flux:       flux,
