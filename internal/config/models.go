@@ -42,8 +42,8 @@ const (
 )
 
 var gptModels = []AIModel{
-	{Title: "GPT-5 Nano", ApiName: "openai-fast", Image: true, Provider: Pollinations},
-	{Title: "GPT-5 Mini", ApiName: "openai", Image: true, Provider: Pollinations},
+	{Title: "GPT-4.1 Nano", ApiName: "openai-fast", Image: true, Provider: Pollinations},
+	{Title: "GPT-5 Nano", ApiName: "openai", Image: true, Provider: Pollinations},
 	{Title: "GPT-5", ApiName: "openai-large", Image: true, Provider: Pollinations},
 	{Title: "GPT-OSS", ApiName: "openai/gpt-oss-120b", Provider: IoNet},
 	{Title: "GPT-OSS-20b", ApiName: "openai/gpt-oss-20b", Provider: IoNet},
@@ -62,14 +62,11 @@ var qwenModels = []AIModel{
 }
 
 var deepSeekModels = []AIModel{
+	{Title: "Deepseek V3.1", ApiName: "deepseek", Provider: Pollinations},
 	{Title: "Deepseek-R1", ApiName: "deepseek-ai/DeepSeek-R1-0528", Provider: IoNet},
 	{Title: "Deepseek-R1 2", ApiName: "deepseek/deepseek-r1:free", Provider: OpenRouter},
-	{Title: "Deepseek-R1 3", ApiName: "deepseek-reasoning", Provider: Pollinations},
-	{Title: "Deepseek V3.1", ApiName: "deepseek", Provider: Pollinations},
-	{Title: "Deepseek V3.1 2", ApiName: "deepseek/deepseek-chat-v3.1:free", Provider: OpenRouter},
 	{Title: "Deepseek V3", ApiName: "deepseek/deepseek-chat-v3-0324:free", Provider: OpenRouter},
 	{Title: "Deepseek-Chimera", ApiName: "tngtech/deepseek-r1t2-chimera:free", Provider: OpenRouter},
-	{Title: "Deepseek R1-Qwen3", ApiName: "deepseek/deepseek-r1-0528-qwen3-8b:free", Provider: OpenRouter},
 }
 
 var mistralModels = []AIModel{
@@ -86,15 +83,13 @@ var geminiModels = []AIModel{
 var otherModels = []AIModel{
 	{Title: "Llama 4 Maverick", ApiName: "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8", Provider: IoNet, Image: true},
 	{Title: "GLM 4.5 Air", ApiName: "z-ai/glm-4.5-air:free", Provider: OpenRouter},
-	{Title: "Kimi K2", ApiName: "moonshotai/kimi-k2:free", Provider: OpenRouter},
-	{Title: "Grok 4 fast", ApiName: "x-ai/grok-4-fast:free", Provider: OpenRouter},
 }
 
 var PhotoModels = []AIModel{
 	{Title: "Flux", ApiName: "flux"},
 	{Title: "Kontext", ApiName: "kontext"},
 	{Title: "Turbo 18+", ApiName: "turbo"},
-	{Title: "Gemini", ApiName: "nanobanana"},
+	{Title: "GPT", ApiName: "gptimage"},
 }
 
 var EditModels = []AIModel{
