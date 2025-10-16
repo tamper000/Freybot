@@ -7,6 +7,7 @@ api:
   ioNetToken: io-v2-abra.cadab.ra.
   pollinationsToken: 123908d-12dsf
   openRouterToken: sk-or-v1-92384907324jkdgsfjfdgh
+  llm7Token: 98912yuklgfjkhoiasd90fi/340-8dgiudfg
 
 database:
   path: ./database/bot.db

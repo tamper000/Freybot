@@ -9,6 +9,8 @@ type Handler struct {
 	ioClient   providers.Client
 	pClient    providers.ClientPollinations
 	opClient   providers.Client
+	llm7Client providers.Client
+
 	userRepo   repository.UserRepository
 	dialogRepo repository.DialogRepository
 	flux       *providers.FluxClient

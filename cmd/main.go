@@ -67,8 +67,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	ionet, pollinations, openrouter := providers.CreateClients(cfg)
-	handlers := handlers.NewHandlers(ionet, pollinations, openrouter,
+	ionet, pollinations, openrouter, llm7 := providers.CreateClients(cfg)
+	handlers := handlers.NewHandlers(ionet, pollinations, openrouter, llm7,
 		userRepo, dialogRepo, flux)
 
 	if err = middlewares.ConfigureRatelimit(ctx, cfg.Telegram.AdminID, cfg.Ratelimit.Rate, cfg.Ratelimit.Time); err != nil {

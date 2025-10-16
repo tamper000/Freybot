@@ -30,6 +30,7 @@ const (
 	OpenRouter   ProviderModel = "OpenRouter"
 	IoNet        ProviderModel = "IoNet"
 	Pollinations ProviderModel = "Pollinations"
+	LLM7         ProviderModel = "LLM7"
 )
 
 const (
@@ -45,6 +46,7 @@ var gptModels = []AIModel{
 	{Title: "GPT-4.1 Nano", ApiName: "openai-fast", Image: true, Provider: Pollinations},
 	{Title: "GPT-5 Nano", ApiName: "openai", Image: true, Provider: Pollinations},
 	{Title: "GPT-5", ApiName: "openai-large", Image: true, Provider: Pollinations},
+	{Title: "GPT-5 2", ApiName: "gpt-5-chat", Image: true, Provider: LLM7},
 	{Title: "GPT-OSS", ApiName: "openai/gpt-oss-120b", Provider: IoNet},
 	{Title: "GPT-OSS-20b", ApiName: "openai/gpt-oss-20b", Provider: IoNet},
 	{Title: "GPT-OSS-20b 2", ApiName: "openai/gpt-oss-20b:free", Provider: OpenRouter},
@@ -62,7 +64,8 @@ var qwenModels = []AIModel{
 }
 
 var deepSeekModels = []AIModel{
-	{Title: "Deepseek V3.1", ApiName: "deepseek", Provider: Pollinations},
+	// {Title: "Deepseek V3.1", ApiName: "deepseek", Provider: Pollinations},
+	{Title: "Deepseek V3.1", ApiName: "deepseek-v3.1", Provider: LLM7},
 	{Title: "Deepseek-R1", ApiName: "deepseek-ai/DeepSeek-R1-0528", Provider: IoNet},
 	{Title: "Deepseek-R1 2", ApiName: "deepseek/deepseek-r1:free", Provider: OpenRouter},
 	{Title: "Deepseek V3", ApiName: "deepseek/deepseek-chat-v3-0324:free", Provider: OpenRouter},
@@ -72,10 +75,12 @@ var deepSeekModels = []AIModel{
 var mistralModels = []AIModel{
 	{Title: "Mistral Large", ApiName: "mistralai/Mistral-Large-Instruct-2411", Provider: IoNet},
 	{Title: "Mistral Small 3.2", ApiName: "mistralai/mistral-small-3.2-24b-instruct:free", Image: true, Provider: OpenRouter},
+	{Title: "Mistral Small 3.1", ApiName: "mistral-small-3.1-24b-instruct-2503", Image: true, Provider: LLM7},
 }
 
 var geminiModels = []AIModel{
 	{Title: "Gemma 3", ApiName: "google/gemma-3-27b-it:free", Image: true, Provider: OpenRouter},
+	{Title: "Gemini 2.5 Pro", ApiName: "gemini/gemini-2.5-pro", Provider: LLM7},
 	{Title: "Gemini 2.5 Lite", ApiName: "gemini", Provider: Pollinations, Image: true},
 	{Title: "Gemini 2.5 Search", ApiName: "gemini-search", Provider: Pollinations, Image: true},
 }
@@ -83,6 +88,7 @@ var geminiModels = []AIModel{
 var otherModels = []AIModel{
 	{Title: "Llama 4 Maverick", ApiName: "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8", Provider: IoNet, Image: true},
 	{Title: "GLM 4.5 Air", ApiName: "z-ai/glm-4.5-air:free", Provider: OpenRouter},
+	// {Title: "GLM 4.5 Flash", ApiName: "glm-4.5-flash", Provider: LLM7},
 }
 
 var PhotoModels = []AIModel{

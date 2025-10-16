@@ -17,7 +17,7 @@ import (
 	tu "github.com/mymmrac/telego/telegoutil"
 )
 
-func NewHandlers(ioClient providers.Client, pClient providers.ClientPollinations, opClient providers.Client,
+func NewHandlers(ioClient providers.Client, pClient providers.ClientPollinations, opClient providers.Client, llm7Cliet providers.Client,
 	userRepo repository.UserRepository, dialogRepo repository.DialogRepository,
 	flux *providers.FluxClient) *Handler {
 
@@ -25,6 +25,8 @@ func NewHandlers(ioClient providers.Client, pClient providers.ClientPollinations
 		ioClient:   ioClient,
 		pClient:    pClient,
 		opClient:   opClient,
+		llm7Client: llm7Cliet,
+
 		userRepo:   userRepo,
 		dialogRepo: dialogRepo,
 		flux:       flux,

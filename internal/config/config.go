@@ -27,6 +27,7 @@ type ModelsConfig struct {
 	IoNetToken        string        `mapstructure:"ioNetToken"`
 	PollinationsToken string        `mapstructure:"pollinationsToken"`
 	OpenRouterToken   string        `mapstructure:"openRouterToken"`
+	LLM7Token         string        `mapstructure:"llm7Token"`
 }
 
 type DatabaseConfig struct {

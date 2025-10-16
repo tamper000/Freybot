@@ -34,6 +34,8 @@ func (c *OpenaiClient) NewMessage(history []models.Message, model, role string) 
 		Messages: openaiHistory,
 	})
 
+	fmt.Println(resp, err, model)
+
 	if err != nil {
 		return "", err
 	}
@@ -68,10 +70,11 @@ func (c *OpenaiClient) NewMessageWithPhoto(message, model string, photo []byte) 
 	return resp.Choices[0].Message.Content, nil
 }
 
-func CreateClients(cfg *config.Config) (Client, ClientPollinations, Client) {
+func CreateClients(cfg *config.Config) (Client, ClientPollinations, Client, Client) {
 	return NewIoNewClient(cfg.Models.IoNetToken, cfg.Models.Timeout),
 		NewPollinationsClient(cfg.Models.PollinationsToken, cfg.Models.Timeout),
-		NewOpenRouterClient(cfg.Models.OpenRouterToken, cfg.Models.Timeout)
+		NewOpenRouterClient(cfg.Models.OpenRouterToken, cfg.Models.Timeout),
+		NewLLM7Client(cfg.Models.LLM7Token, cfg.Models.Timeout)
 }
 
 func GetRole(role string) string {
