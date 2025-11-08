@@ -45,7 +45,7 @@ const (
 var gptModels = []AIModel{
 	{Title: "GPT-4.1 Nano", ApiName: "openai-fast", Image: true, Provider: Pollinations},
 	{Title: "GPT-5 Nano", ApiName: "openai", Image: true, Provider: Pollinations},
-	{Title: "GPT-5", ApiName: "openai-large", Image: true, Provider: Pollinations},
+	{Title: "GPT-4.1", ApiName: "openai-large", Image: true, Provider: Pollinations},
 	{Title: "GPT-5 2", ApiName: "gpt-5-chat", Image: true, Provider: LLM7},
 	{Title: "GPT-OSS", ApiName: "openai/gpt-oss-120b", Provider: IoNet},
 	{Title: "GPT-OSS-20b", ApiName: "openai/gpt-oss-20b", Provider: IoNet},
@@ -86,6 +86,8 @@ var geminiModels = []AIModel{
 
 var otherModels = []AIModel{
 	{Title: "Llama 4 Maverick", ApiName: "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8", Provider: IoNet, Image: true},
+	{Title: "Kimi K2", ApiName: "moonshotai/Kimi-K2-Instruct-0905", Provider: IoNet},
+	{Title: "GLM 4.6", ApiName: "zai-org/GLM-4.6", Provider: IoNet},
 	{Title: "GLM 4.5 Air", ApiName: "z-ai/glm-4.5-air:free", Provider: OpenRouter},
 	{Title: "GLM 4.5 Flash", ApiName: "glm-4.5-flash", Provider: LLM7},
 	{Title: "Minimax M2", ApiName: "minimax/minimax-m2:free", Provider: OpenRouter},
@@ -95,6 +97,8 @@ var PhotoModels = []AIModel{
 	{Title: "Flux", ApiName: "flux"},
 	{Title: "Kontext", ApiName: "kontext"},
 	{Title: "Turbo 18+", ApiName: "turbo"},
+	{Title: "Seedream", ApiName: "seedream"},
+	{Title: "NanoBanana", ApiName: "nanobanana"},
 	{Title: "GPT", ApiName: "gptimage"},
 }
 
