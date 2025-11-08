@@ -64,8 +64,7 @@ var qwenModels = []AIModel{
 }
 
 var deepSeekModels = []AIModel{
-	// {Title: "Deepseek V3.1", ApiName: "deepseek", Provider: Pollinations},
-	{Title: "Deepseek V3.1", ApiName: "deepseek-v3.1", Provider: LLM7},
+	// {Title: "Deepseek V3.1", ApiName: "deepseek/deepseek-chat-v3.1:free", Provider: OpenRouter},
 	{Title: "Deepseek-R1", ApiName: "deepseek-ai/DeepSeek-R1-0528", Provider: IoNet},
 	{Title: "Deepseek-R1 2", ApiName: "deepseek/deepseek-r1:free", Provider: OpenRouter},
 	{Title: "Deepseek V3", ApiName: "deepseek/deepseek-chat-v3-0324:free", Provider: OpenRouter},
@@ -80,7 +79,7 @@ var mistralModels = []AIModel{
 
 var geminiModels = []AIModel{
 	{Title: "Gemma 3", ApiName: "google/gemma-3-27b-it:free", Image: true, Provider: OpenRouter},
-	{Title: "Gemini 2.5 Pro", ApiName: "gemini/gemini-2.5-pro", Provider: LLM7},
+	// {Title: "Gemini 2.5 Pro", ApiName: "gemini/gemini-2.5-pro", Provider: LLM7},
 	{Title: "Gemini 2.5 Lite", ApiName: "gemini", Provider: Pollinations, Image: true},
 	{Title: "Gemini 2.5 Search", ApiName: "gemini-search", Provider: Pollinations, Image: true},
 }
@@ -88,7 +87,8 @@ var geminiModels = []AIModel{
 var otherModels = []AIModel{
 	{Title: "Llama 4 Maverick", ApiName: "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8", Provider: IoNet, Image: true},
 	{Title: "GLM 4.5 Air", ApiName: "z-ai/glm-4.5-air:free", Provider: OpenRouter},
-	// {Title: "GLM 4.5 Flash", ApiName: "glm-4.5-flash", Provider: LLM7},
+	{Title: "GLM 4.5 Flash", ApiName: "glm-4.5-flash", Provider: LLM7},
+	{Title: "Minimax M2", ApiName: "minimax/minimax-m2:free", Provider: OpenRouter},
 }
 
 var PhotoModels = []AIModel{

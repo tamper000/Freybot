@@ -75,7 +75,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// bh.Use(th.PanicRecovery())
+	bh.Use(th.PanicRecovery())
 	bh.Use(middlewares.OnlyAllowUsers(userRepo, cfg.Telegram.AdminID))
 	bh.Use(middlewares.Ratelimit)
 

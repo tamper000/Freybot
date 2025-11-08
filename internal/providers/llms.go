@@ -34,8 +34,6 @@ func (c *OpenaiClient) NewMessage(history []models.Message, model, role string) 
 		Messages: openaiHistory,
 	})
 
-	fmt.Println(resp, err, model)
-
 	if err != nil {
 		return "", err
 	}
