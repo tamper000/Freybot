@@ -15,7 +15,7 @@ require (
 	github.com/zavitkov/tg-markdown v1.0.1
 	golang.org/x/net v0.44.0
 	gorm.io/driver/sqlite v1.6.0
-	gorm.io/gorm v1.30.1
+	gorm.io/gorm v1.31.1
 )
 
 require (
