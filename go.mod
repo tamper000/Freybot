@@ -11,7 +11,7 @@ require (
 	github.com/prometheus/client_golang v1.23.2
 	github.com/spf13/viper v1.20.1
 	github.com/valyala/fasthttp v1.64.0
-	github.com/yuin/goldmark v1.7.13
+	github.com/yuin/goldmark v1.8.2
 	github.com/zavitkov/tg-markdown v1.0.1
 	golang.org/x/net v0.44.0
 	gorm.io/driver/sqlite v1.6.0
