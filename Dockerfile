@@ -1,5 +1,5 @@
 # Stage 1
-FROM golang:1.25.1-bookworm as builder
+FROM golang:1.26.3-bookworm as builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
