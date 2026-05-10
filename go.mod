@@ -1,6 +1,6 @@
 module github.com/tamper000/freybot
 
-go 1.24.5
+go 1.25.0
 
 require (
 	github.com/allegro/bigcache/v3 v3.1.0
@@ -13,7 +13,7 @@ require (
 	github.com/valyala/fasthttp v1.64.0
 	github.com/yuin/goldmark v1.7.13
 	github.com/zavitkov/tg-markdown v1.0.1
-	golang.org/x/net v0.44.0
+	golang.org/x/net v0.54.0
 	gorm.io/driver/sqlite v1.6.0
 	gorm.io/gorm v1.30.1
 )
@@ -57,8 +57,8 @@ require (
 	go.uber.org/multierr v1.9.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
 	golang.org/x/arch v0.0.0-20210923205945-b76863e36670 // indirect
-	golang.org/x/sys v0.36.0 // indirect
-	golang.org/x/text v0.29.0 // indirect
+	golang.org/x/sys v0.44.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
 	google.golang.org/protobuf v1.36.8 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
